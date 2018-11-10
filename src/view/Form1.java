@@ -37,8 +37,8 @@ public class Form1 extends javax.swing.JFrame {
     private String nilai3[][] = null;
     private double nilai4[][] = null;
     private double nilairandom[][] = null;
-    private DefaultTableModel modelData, modelRandom, modelHasilCluster;        
-            
+    private DefaultTableModel modelData, modelRandom, modelHasilCluster;
+
     public Form1() {
         initComponents();
         setResizable(false);
@@ -473,7 +473,10 @@ public class Form1 extends javax.swing.JFrame {
     private void buttonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRefreshActionPerformed
         // TODO add your handling code here:
         // refresh
-        nilai = null; nilai2 = null; nilai3 = null; nilai4 = null;
+        nilai = null;
+        nilai2 = null;
+        nilai3 = null;
+        nilai4 = null;
         nilairandom = null;
         comboData.setSelectedIndex(0);
         //        comboPerhitungan.setSelectedIndex(0);
@@ -495,17 +498,15 @@ public class Form1 extends javax.swing.JFrame {
         anggotaM.selectAll();
         anggotaM.replaceSelection(" ");
 
-        if(nilairandom == null){
+        if (nilairandom == null) {
             JOptionPane.showMessageDialog(null, "Data Set atau Bobot Acak Kosong", "WARNING", JOptionPane.WARNING_MESSAGE);
-        }
-
-        else{
+        } else {
             int jlhIterasi = comboIterasi.getSelectedIndex();
             int lajuawal = comboLajuAwal.getSelectedIndex();
             OlahDokumen oldok = new OlahDokumen();
             double alpha = oldok.readLajuAwal(lajuawal);
             int iterasi = oldok.readJumlahIterasi(jlhIterasi);
-            
+
             SelfOrganizingMap som = new SelfOrganizingMap();
             int clusterEuclidean[] = new int[nilai4.length];
             int clusterManhattan[] = new int[nilai4.length];
@@ -516,16 +517,16 @@ public class Form1 extends javax.swing.JFrame {
             bobot_randomE = nilairandom;
             bobot_randomM = nilairandom;
             bobot_randomC = nilairandom;
-            
+
             Praproses pra = new Praproses();
             pra.cetak_double(bobot_randomE);
             pra.cetak_double(bobot_randomM);
             pra.cetak_double(bobot_randomC);
-            
+
             System.out.println("Euclidean\n\n");
             clusterEuclidean = som.testEuclidean(nilai4, bobot_randomE, alpha, iterasi);
             System.out.println("\n\n");
-            
+
             pra.cetak_double(bobot_randomE);
             pra.cetak_double(bobot_randomM);
             pra.cetak_double(bobot_randomC);
@@ -552,11 +553,9 @@ public class Form1 extends javax.swing.JFrame {
 
     private void buttonRandomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRandomActionPerformed
 
-        if(nilai4 == null){
+        if (nilai4 == null) {
             JOptionPane.showMessageDialog(null, "Data Set Kosong", "WARNING", JOptionPane.WARNING_MESSAGE);
-        }
-
-        else{
+        } else {
             nilairandom = null;
             tableRandom.setModel(new DefaultTableModel());
             int kodeCluster = comboCluster.getSelectedIndex();
@@ -569,70 +568,77 @@ public class Form1 extends javax.swing.JFrame {
 
     }//GEN-LAST:event_buttonRandomActionPerformed
 
-     
+
     private void buttonDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDataActionPerformed
         // TODO add your handling code here:
         //getselected data
         String dataname = "";
         dataname = comboData.getSelectedItem().toString();
-        System.out.println("Dataset = "+dataname);
-        
+        System.out.println("Dataset = " + dataname);
+
         Praproses praproses = new Praproses();
         tableData.setModel(new DefaultTableModel());
-        
+
         //loaddata
-        nilai= praproses.dataValue(dataname);
+        nilai = praproses.dataValue(dataname);
         praproses.cetak(nilai);
         System.out.println("\n\n\n");
-        
+
         //pembobotan part
+        System.out.println("====Weighted Process===");
         nilai2 = praproses.pembobotan(nilai);
         praproses.cetak(nilai2);
         System.out.println("\n\n\n");
-//        nilai3 = praproses.pengecekanMissingValue(nilai2);
-//        //        praproses.cetak(nilai3);
-//        //        System.out.println("\n\n\n");
-//        nilai4 = praproses.normalisasi(nilai3);
-//        //        praproses.cetak_double(nilai4);
-//        //        System.out.println("\n\n\n");
-//        loadDataMatrix(nilai4);
-//        buttonData.setEnabled(false);
+
+        //checking missing value
+        System.out.println("====Checking Missing Value===");
+        nilai3 = praproses.pengecekanMissingValue(nilai2);
+        praproses.cetak(nilai3);
+        System.out.println("\n\n\n");
+
+        //Normalization
+        System.out.println("====Normalization Process====");
+        nilai4 = praproses.normalisasi(nilai3);
+        praproses.cetak_double(nilai4);
+        System.out.println("\n\n\n");
+        
+        loadDataMatrix(nilai4);
+        
+        buttonData.setEnabled(false);
     }//GEN-LAST:event_buttonDataActionPerformed
 
-    
-    private void loadDataMatrix(double data[][]){
-        
+    private void loadDataMatrix(double data[][]) {
+
         int baris = data.length;
         int kolom = data[0].length;
         modelData = (DefaultTableModel) tableData.getModel();
         modelData.setColumnCount(kolom);
-        
-        for(int i=0; i<baris; i++){
+
+        for (int i = 0; i < baris; i++) {
             String row[] = new String[kolom];
-            for(int j=0; j<kolom; j++){
+            for (int j = 0; j < kolom; j++) {
                 row[j] = String.valueOf(data[i][j]);
             }
             modelData.addRow(row);
         }
     }
-    
-    private void loadDataRandom(double data[][]){
-        
+
+    private void loadDataRandom(double data[][]) {
+
         int baris = data.length;
         int kolom = data[0].length;
         modelRandom = (DefaultTableModel) tableRandom.getModel();
         modelRandom.setColumnCount(kolom);
-        
-        for(int i=0; i<baris; i++){
+
+        for (int i = 0; i < baris; i++) {
             String row[] = new String[kolom];
-            for(int j=0; j<kolom; j++){
+            for (int j = 0; j < kolom; j++) {
                 row[j] = String.valueOf(data[i][j]);
             }
             modelRandom.addRow(row);
         }
     }
-    
-        
+
     /**
      * @param args the command line arguments
      */
