@@ -31,7 +31,7 @@ public class Form1 extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      */
-    private int kodeData;
+//    private int kodeData;
     private String nilai[][] = null;
     private String nilai2[][] = null;
     private String nilai3[][] = null;
@@ -569,25 +569,34 @@ public class Form1 extends javax.swing.JFrame {
 
     }//GEN-LAST:event_buttonRandomActionPerformed
 
+     
     private void buttonDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDataActionPerformed
         // TODO add your handling code here:
-        kodeData = comboData.getSelectedIndex();
-        tableData.setModel(new DefaultTableModel());
+        //getselected data
+        String dataname = "";
+        dataname = comboData.getSelectedItem().toString();
+        System.out.println("Dataset = "+dataname);
+        
         Praproses praproses = new Praproses();
-        nilai= praproses.dataValue(kodeData);
-        //        praproses.cetak(nilai);
-        //        System.out.println("\n\n\n");
+        tableData.setModel(new DefaultTableModel());
+        
+        //loaddata
+        nilai= praproses.dataValue(dataname);
+        praproses.cetak(nilai);
+        System.out.println("\n\n\n");
+        
+        //pembobotan part
         nilai2 = praproses.pembobotan(nilai);
-        //        praproses.cetak(nilai2);
-        //        System.out.println("\n\n\n");
-        nilai3 = praproses.pengecekanMissingValue(nilai2);
-        //        praproses.cetak(nilai3);
-        //        System.out.println("\n\n\n");
-        nilai4 = praproses.normalisasi(nilai3);
-        //        praproses.cetak_double(nilai4);
-        //        System.out.println("\n\n\n");
-        loadDataMatrix(nilai4);
-        buttonData.setEnabled(false);
+        praproses.cetak(nilai2);
+        System.out.println("\n\n\n");
+//        nilai3 = praproses.pengecekanMissingValue(nilai2);
+//        //        praproses.cetak(nilai3);
+//        //        System.out.println("\n\n\n");
+//        nilai4 = praproses.normalisasi(nilai3);
+//        //        praproses.cetak_double(nilai4);
+//        //        System.out.println("\n\n\n");
+//        loadDataMatrix(nilai4);
+//        buttonData.setEnabled(false);
     }//GEN-LAST:event_buttonDataActionPerformed
 
     

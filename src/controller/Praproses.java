@@ -58,11 +58,8 @@ public class Praproses {
         }
     }
     
-    public String[][] dataValue (int kode){
-        
-        OlahDokumen olDok = new OlahDokumen();
-        String filepath = olDok.readDokumenTeks(kode);
-        File file = new File(filepath);
+    public String[][] dataValue (String dataname){
+        File file = new File("src/Dataset/"+dataname+".txt");
         String nilai[][] = null;
         
         try {
@@ -91,7 +88,7 @@ public class Praproses {
         char temp2[];
         sKolom = new int[data[0].length];
         
-        //ini data1.length blala anggap bae data apo yg dimasuke fungsi
+        //checking data categorical or numeric
         for(int j=0;j<data[0].length;j++){
             int flag=0;
             for(int i=0;i<data.length;i++){
@@ -109,9 +106,8 @@ public class Praproses {
         return sKolom;
     }
     
-    public String[][] pembobotan(String nilai[][]){
-        
-//        int i=0, j=0,k;
+    public String[][] pembobotan(String nilai[][]){        
+        int i,j,k,l;
         int kolom = nilai[0].length;
         int baris = nilai.length;
         String flag = "0";
@@ -119,19 +115,15 @@ public class Praproses {
         
         sKolom = checkdata(nilai);
 
-        for(int i=0; i<kolom; i++){
-            
+        for(i=0; i<kolom; i++){
             if(sKolom[i] == 1){
                     List<String> tmp2 = new ArrayList<String>();
-
-                for(int k=0; k<baris; k++){
+                for(k=0; k<baris; k++){
                     tmp2.add(nilai[k][i]);
                 }
-
                 tmp2 = tmp2.stream().distinct().collect(Collectors.toList());
-
-                for(int j=0; j<baris; j++){
-                    for (int l=0; l<tmp2.size(); l++){
+                for(j=0; j<baris; j++){
+                    for (l=0; l<tmp2.size(); l++){
                         if(nilai[j][i].equals("?")){
                             flag = "?";
                             continue;
@@ -141,9 +133,7 @@ public class Praproses {
                     }
                     nilai[j][i]=flag;
                 }
-            }
-            
-            
+            }        
         }
         return nilai;
     }
