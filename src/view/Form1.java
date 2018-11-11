@@ -79,26 +79,26 @@ public class Form1 extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tableRandom = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
-        anggotaM = new javax.swing.JTextArea();
+        anggotaManhattan = new javax.swing.JTextArea();
         jScrollPane8 = new javax.swing.JScrollPane();
-        anggotaC = new javax.swing.JTextArea();
+        anggotaChebyshev = new javax.swing.JTextArea();
         jScrollPane9 = new javax.swing.JScrollPane();
-        anggotaE = new javax.swing.JTextArea();
+        anggotaEuclidean = new javax.swing.JTextArea();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        waktuChebyshev = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
-        jTextField10 = new javax.swing.JTextField();
-        jTextField11 = new javax.swing.JTextField();
+        waktuManhattan = new javax.swing.JTextField();
+        waktuEuclidean = new javax.swing.JTextField();
+        dbiChebyshev = new javax.swing.JTextField();
+        dbiManhattan = new javax.swing.JTextField();
+        dbiEuclidean = new javax.swing.JTextField();
         comboLajuAwal = new javax.swing.JComboBox<>();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -218,20 +218,20 @@ public class Form1 extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(tableRandom);
 
-        anggotaM.setEditable(false);
-        anggotaM.setColumns(20);
-        anggotaM.setRows(5);
-        jScrollPane3.setViewportView(anggotaM);
+        anggotaManhattan.setEditable(false);
+        anggotaManhattan.setColumns(20);
+        anggotaManhattan.setRows(5);
+        jScrollPane3.setViewportView(anggotaManhattan);
 
-        anggotaC.setEditable(false);
-        anggotaC.setColumns(20);
-        anggotaC.setRows(5);
-        jScrollPane8.setViewportView(anggotaC);
+        anggotaChebyshev.setEditable(false);
+        anggotaChebyshev.setColumns(20);
+        anggotaChebyshev.setRows(5);
+        jScrollPane8.setViewportView(anggotaChebyshev);
 
-        anggotaE.setEditable(false);
-        anggotaE.setColumns(20);
-        anggotaE.setRows(5);
-        jScrollPane9.setViewportView(anggotaE);
+        anggotaEuclidean.setEditable(false);
+        anggotaEuclidean.setColumns(20);
+        anggotaEuclidean.setRows(5);
+        jScrollPane9.setViewportView(anggotaEuclidean);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel10.setText("Euclidean");
@@ -251,8 +251,8 @@ public class Form1 extends javax.swing.JFrame {
         jLabel15.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel15.setText("Chebyshev");
 
-        jTextField6.setEditable(false);
-        jTextField6.setBackground(new java.awt.Color(255, 255, 255));
+        waktuChebyshev.setEditable(false);
+        waktuChebyshev.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel16.setText("Euclidean");
@@ -263,20 +263,20 @@ public class Form1 extends javax.swing.JFrame {
         jLabel18.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel18.setText("Chebyshev");
 
-        jTextField7.setEditable(false);
-        jTextField7.setBackground(new java.awt.Color(255, 255, 255));
+        waktuManhattan.setEditable(false);
+        waktuManhattan.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTextField8.setEditable(false);
-        jTextField8.setBackground(new java.awt.Color(255, 255, 255));
+        waktuEuclidean.setEditable(false);
+        waktuEuclidean.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTextField9.setEditable(false);
-        jTextField9.setBackground(new java.awt.Color(255, 255, 255));
+        dbiChebyshev.setEditable(false);
+        dbiChebyshev.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTextField10.setEditable(false);
-        jTextField10.setBackground(new java.awt.Color(255, 255, 255));
+        dbiManhattan.setEditable(false);
+        dbiManhattan.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTextField11.setEditable(false);
-        jTextField11.setBackground(new java.awt.Color(255, 255, 255));
+        dbiEuclidean.setEditable(false);
+        dbiEuclidean.setBackground(new java.awt.Color(255, 255, 255));
 
         comboLajuAwal.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         comboLajuAwal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0.4", "0.6", "0.7", "0.9" }));
@@ -299,12 +299,12 @@ public class Form1 extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(1, 1, 1)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(waktuEuclidean, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGap(23, 23, 23)
                                                 .addComponent(jLabel13)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(waktuManhattan, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel1)
@@ -318,11 +318,11 @@ public class Form1 extends javax.swing.JFrame {
                                             .addComponent(buttonRandom, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
                                             .addComponent(buttonData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(dbiEuclidean, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(dbiManhattan, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(dbiChebyshev, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(23, 23, 23)
                                         .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -340,7 +340,7 @@ public class Form1 extends javax.swing.JFrame {
                                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(waktuChebyshev, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(102, 102, 102)
@@ -422,9 +422,9 @@ public class Form1 extends javax.swing.JFrame {
                             .addComponent(jLabel12))
                         .addGap(3, 3, 3)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(dbiChebyshev, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dbiManhattan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dbiEuclidean, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -434,9 +434,9 @@ public class Form1 extends javax.swing.JFrame {
                             .addComponent(jLabel15))
                         .addGap(3, 3, 3)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(waktuChebyshev, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(waktuManhattan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(waktuEuclidean, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(24, 24, 24)
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -471,32 +471,27 @@ public class Form1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRefreshActionPerformed
-        // TODO add your handling code here:
-        // refresh
-        nilai = null;
-        nilai2 = null;
-        nilai3 = null;
-        nilai4 = null;
+        nilai = null; nilai2 = null; nilai3 = null; nilai4 = null;
         nilairandom = null;
         comboData.setSelectedIndex(0);
-        //        comboPerhitungan.setSelectedIndex(0);
         comboCluster.setSelectedIndex(0);
         comboIterasi.setSelectedIndex(0);
         buttonData.setEnabled(true);
         buttonRandom.setEnabled(true);
         tableData.setModel(new DefaultTableModel());
         tableRandom.setModel(new DefaultTableModel());
-        anggotaE.setText("");
-        anggotaM.setText("");
-        anggotaC.setText("");
+        anggotaEuclidean.setText("");
+        anggotaManhattan.setText("");
+        anggotaChebyshev.setText("");
+        waktuEuclidean.setText("");
+        waktuManhattan.setText("");
+        waktuChebyshev.setText("");
+        dbiEuclidean.setText("");
+        dbiManhattan.setText("");
+        dbiChebyshev.setText("");
     }//GEN-LAST:event_buttonRefreshActionPerformed
 
     private void buttonProsesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonProsesActionPerformed
-
-        //            dbiE.setText(" ");
-        //            waktuE.setText(" ");
-        anggotaM.selectAll();
-        anggotaM.replaceSelection(" ");
 
         if (nilairandom == null) {
             JOptionPane.showMessageDialog(null, "Data Set atau Bobot Acak Kosong", "WARNING", JOptionPane.WARNING_MESSAGE);
@@ -507,46 +502,25 @@ public class Form1 extends javax.swing.JFrame {
             double alpha = oldok.readLajuAwal(lajuawal);
             int iterasi = oldok.readJumlahIterasi(jlhIterasi);
 
-            SelfOrganizingMap som = new SelfOrganizingMap();
             int clusterEuclidean[] = new int[nilai4.length];
-            int clusterManhattan[] = new int[nilai4.length];
-            int clusterChebyshev[] = new int[nilai4.length];
             double bobot_randomE[][] = new double[nilairandom.length][nilairandom[0].length];
-            double bobot_randomM[][] = new double[nilairandom.length][nilairandom[0].length];
-            double bobot_randomC[][] = new double[nilairandom.length][nilairandom[0].length];
             bobot_randomE = nilairandom;
-            bobot_randomM = nilairandom;
-            bobot_randomC = nilairandom;
 
             Praproses pra = new Praproses();
             pra.cetak_double(bobot_randomE);
-            pra.cetak_double(bobot_randomM);
-            pra.cetak_double(bobot_randomC);
 
+            SelfOrganizingMap som = new SelfOrganizingMap();
             System.out.println("Euclidean\n\n");
             clusterEuclidean = som.testEuclidean(nilai4, bobot_randomE, alpha, iterasi);
             System.out.println("\n\n");
-
+            
+            //harusnya bobot_randomE ini idk berubah 
             pra.cetak_double(bobot_randomE);
-            pra.cetak_double(bobot_randomM);
-            pra.cetak_double(bobot_randomC);
-//            System.out.println("Manhattan\n\n");
-//            clusterManhattan = som.testManhattan(nilai4, bobot_randomM, alpha, iterasi);
-//            System.out.println("Chebyshev\n\n");
-//            clusterChebyshev = som.testChebyshev(nilai4, bobot_randomC, alpha, iterasi);
-//            
-//            anggotaE.setText("Data       Cluster\n");
-//            for(int i=0; i<nilai4.length; i++){
-//                anggotaE.append(" "+i +"           " + clusterEuclidean[i]+"\n");
-//            }
-//            anggotaM.setText("Data       Cluster\n");
-//            for(int i=0; i<nilai4.length; i++){
-//                anggotaM.append(" "+i +"           " + clusterManhattan[i]+"\n");
-//            }
-//            anggotaC.setText("Data       Cluster\n");
-//            for(int i=0; i<nilai4.length; i++){
-//                anggotaC.append(" "+i +"           " + clusterManhattan[i]+"\n");
-//            }
+            
+            anggotaEuclidean.setText("Data       Cluster\n");
+            for(int i=0; i<nilai4.length; i++){
+                anggotaEuclidean.append(" "+i +"           " + clusterEuclidean[i]+"\n");
+            }
         }
 
     }//GEN-LAST:event_buttonProsesActionPerformed
@@ -682,9 +656,9 @@ public class Form1 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea anggotaC;
-    private javax.swing.JTextArea anggotaE;
-    private javax.swing.JTextArea anggotaM;
+    private javax.swing.JTextArea anggotaChebyshev;
+    private javax.swing.JTextArea anggotaEuclidean;
+    private javax.swing.JTextArea anggotaManhattan;
     private javax.swing.JButton buttonData;
     private javax.swing.JButton buttonProses;
     private javax.swing.JButton buttonRandom;
@@ -693,6 +667,9 @@ public class Form1 extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboData;
     private javax.swing.JComboBox<String> comboIterasi;
     private javax.swing.JComboBox<String> comboLajuAwal;
+    private javax.swing.JTextField dbiChebyshev;
+    private javax.swing.JTextField dbiEuclidean;
+    private javax.swing.JTextField dbiManhattan;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -721,13 +698,10 @@ public class Form1 extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JTable tableData;
     private javax.swing.JTable tableRandom;
+    private javax.swing.JTextField waktuChebyshev;
+    private javax.swing.JTextField waktuEuclidean;
+    private javax.swing.JTextField waktuManhattan;
     // End of variables declaration//GEN-END:variables
 }
