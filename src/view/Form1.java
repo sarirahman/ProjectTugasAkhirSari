@@ -492,7 +492,7 @@ public class Form1 extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonRefreshActionPerformed
 
     private void buttonProsesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonProsesActionPerformed
-
+        int i,j;
         if (nilairandom == null) {
             JOptionPane.showMessageDialog(null, "Data Set atau Bobot Acak Kosong", "WARNING", JOptionPane.WARNING_MESSAGE);
         } else {
@@ -504,9 +504,19 @@ public class Form1 extends javax.swing.JFrame {
 
             int clusterEuclidean[] = new int[nilai4.length];
             double bobot_randomE[][] = new double[nilairandom.length][nilairandom[0].length];
+            double bobot_randomE1[][] = new double[nilairandom.length][nilairandom[0].length];
+            
             bobot_randomE = nilairandom;
-
+            
+            for(i=0;i<nilairandom.length;i++){
+                for(j=0;j<nilairandom[0].length;j++){
+                    bobot_randomE[i][j] = nilairandom[i][j];
+                    bobot_randomE1[i][j] = nilairandom[i][j];
+                }
+            }
             Praproses pra = new Praproses();
+            
+            System.out.println("\n=====Bobot random Euclidean======");
             pra.cetak_double(bobot_randomE);
 
             SelfOrganizingMap som = new SelfOrganizingMap();
@@ -514,11 +524,12 @@ public class Form1 extends javax.swing.JFrame {
             clusterEuclidean = som.testEuclidean(nilai4, bobot_randomE, alpha, iterasi);
             System.out.println("\n\n");
             
+            System.out.println("\n=======Bobot random Euclidean setelah Proses=====");
             //harusnya bobot_randomE ini idk berubah 
-            pra.cetak_double(bobot_randomE);
+            pra.cetak_double(bobot_randomE1);
             
             anggotaEuclidean.setText("Data       Cluster\n");
-            for(int i=0; i<nilai4.length; i++){
+            for(i=0; i<nilai4.length; i++){
                 anggotaEuclidean.append(" "+i +"           " + clusterEuclidean[i]+"\n");
             }
         }
