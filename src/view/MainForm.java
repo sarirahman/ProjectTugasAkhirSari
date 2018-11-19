@@ -5,10 +5,12 @@
  */
 package view;
 
+import controller.Cetak;
+import controller.DBI;
 import controller.Matrix;
-import controller.OlahDokumen;
+import controller.OlahData;
 import controller.Praproses;
-import controller.SelfOrganizingMap;
+import controller.SOM;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -26,7 +28,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author User
  */
-public class Form1 extends javax.swing.JFrame {
+public class MainForm extends javax.swing.JFrame {
 
     /**
      * Creates new form NewJFrame
@@ -38,8 +40,9 @@ public class Form1 extends javax.swing.JFrame {
     private double nilai4[][] = null;
     private double nilairandom[][] = null;
     private DefaultTableModel modelData, modelRandom, modelHasilCluster;
+    long startE = 0, endE = 0, startM = 0, endM = 0, startC = 0, endC = 0;
 
-    public Form1() {
+    public MainForm() {
         initComponents();
         setResizable(false);
     }
@@ -79,26 +82,26 @@ public class Form1 extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tableRandom = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
-        anggotaManhattan = new javax.swing.JTextArea();
+        anggotaM = new javax.swing.JTextArea();
         jScrollPane8 = new javax.swing.JScrollPane();
-        anggotaChebyshev = new javax.swing.JTextArea();
+        anggotaC = new javax.swing.JTextArea();
         jScrollPane9 = new javax.swing.JScrollPane();
-        anggotaEuclidean = new javax.swing.JTextArea();
+        anggotaE = new javax.swing.JTextArea();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        waktuChebyshev = new javax.swing.JTextField();
+        waktuC = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        waktuManhattan = new javax.swing.JTextField();
-        waktuEuclidean = new javax.swing.JTextField();
-        dbiChebyshev = new javax.swing.JTextField();
-        dbiManhattan = new javax.swing.JTextField();
-        dbiEuclidean = new javax.swing.JTextField();
+        waktuM = new javax.swing.JTextField();
+        waktuE = new javax.swing.JTextField();
+        dbiC = new javax.swing.JTextField();
+        dbiM = new javax.swing.JTextField();
+        dbiE = new javax.swing.JTextField();
         comboLajuAwal = new javax.swing.JComboBox<>();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -218,20 +221,20 @@ public class Form1 extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(tableRandom);
 
-        anggotaManhattan.setEditable(false);
-        anggotaManhattan.setColumns(20);
-        anggotaManhattan.setRows(5);
-        jScrollPane3.setViewportView(anggotaManhattan);
+        anggotaM.setEditable(false);
+        anggotaM.setColumns(20);
+        anggotaM.setRows(5);
+        jScrollPane3.setViewportView(anggotaM);
 
-        anggotaChebyshev.setEditable(false);
-        anggotaChebyshev.setColumns(20);
-        anggotaChebyshev.setRows(5);
-        jScrollPane8.setViewportView(anggotaChebyshev);
+        anggotaC.setEditable(false);
+        anggotaC.setColumns(20);
+        anggotaC.setRows(5);
+        jScrollPane8.setViewportView(anggotaC);
 
-        anggotaEuclidean.setEditable(false);
-        anggotaEuclidean.setColumns(20);
-        anggotaEuclidean.setRows(5);
-        jScrollPane9.setViewportView(anggotaEuclidean);
+        anggotaE.setEditable(false);
+        anggotaE.setColumns(20);
+        anggotaE.setRows(5);
+        jScrollPane9.setViewportView(anggotaE);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel10.setText("Euclidean");
@@ -251,8 +254,8 @@ public class Form1 extends javax.swing.JFrame {
         jLabel15.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel15.setText("Chebyshev");
 
-        waktuChebyshev.setEditable(false);
-        waktuChebyshev.setBackground(new java.awt.Color(255, 255, 255));
+        waktuC.setEditable(false);
+        waktuC.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel16.setText("Euclidean");
@@ -263,20 +266,20 @@ public class Form1 extends javax.swing.JFrame {
         jLabel18.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel18.setText("Chebyshev");
 
-        waktuManhattan.setEditable(false);
-        waktuManhattan.setBackground(new java.awt.Color(255, 255, 255));
+        waktuM.setEditable(false);
+        waktuM.setBackground(new java.awt.Color(255, 255, 255));
 
-        waktuEuclidean.setEditable(false);
-        waktuEuclidean.setBackground(new java.awt.Color(255, 255, 255));
+        waktuE.setEditable(false);
+        waktuE.setBackground(new java.awt.Color(255, 255, 255));
 
-        dbiChebyshev.setEditable(false);
-        dbiChebyshev.setBackground(new java.awt.Color(255, 255, 255));
+        dbiC.setEditable(false);
+        dbiC.setBackground(new java.awt.Color(255, 255, 255));
 
-        dbiManhattan.setEditable(false);
-        dbiManhattan.setBackground(new java.awt.Color(255, 255, 255));
+        dbiM.setEditable(false);
+        dbiM.setBackground(new java.awt.Color(255, 255, 255));
 
-        dbiEuclidean.setEditable(false);
-        dbiEuclidean.setBackground(new java.awt.Color(255, 255, 255));
+        dbiE.setEditable(false);
+        dbiE.setBackground(new java.awt.Color(255, 255, 255));
 
         comboLajuAwal.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         comboLajuAwal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0.4", "0.6", "0.7", "0.9" }));
@@ -299,12 +302,12 @@ public class Form1 extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(1, 1, 1)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(waktuEuclidean, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(waktuE, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGap(23, 23, 23)
                                                 .addComponent(jLabel13)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(waktuManhattan, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(waktuM, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel1)
@@ -318,11 +321,11 @@ public class Form1 extends javax.swing.JFrame {
                                             .addComponent(buttonRandom, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
                                             .addComponent(buttonData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(dbiEuclidean, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(dbiE, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(dbiManhattan, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(dbiM, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(dbiChebyshev, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(dbiC, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(23, 23, 23)
                                         .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -340,7 +343,7 @@ public class Form1 extends javax.swing.JFrame {
                                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(waktuChebyshev, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(waktuC, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(102, 102, 102)
@@ -422,9 +425,9 @@ public class Form1 extends javax.swing.JFrame {
                             .addComponent(jLabel12))
                         .addGap(3, 3, 3)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(dbiChebyshev, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dbiManhattan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dbiEuclidean, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(dbiC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dbiM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dbiE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -434,9 +437,9 @@ public class Form1 extends javax.swing.JFrame {
                             .addComponent(jLabel15))
                         .addGap(3, 3, 3)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(waktuChebyshev, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(waktuManhattan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(waktuEuclidean, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(waktuC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(waktuM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(waktuE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(24, 24, 24)
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -471,56 +474,151 @@ public class Form1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRefreshActionPerformed
-        nilai = null; nilai2 = null; nilai3 = null; nilai4 = null;
-        nilairandom = null;
+        this.nilai = null;
+        this.nilai2 = null;
+        this.nilai3 = null;
+        this.nilai4 = null;
+        this.nilairandom = null;
+        this.startE = 0;
+        this.endE = 0;
+        this.startM = 0;
+        this.endM = 0;
+        this.startC = 0;
+        this.endC = 0;
         comboData.setSelectedIndex(0);
         comboCluster.setSelectedIndex(0);
         comboIterasi.setSelectedIndex(0);
+        comboLajuAwal.setSelectedIndex(0);
         buttonData.setEnabled(true);
         buttonRandom.setEnabled(true);
         tableData.setModel(new DefaultTableModel());
         tableRandom.setModel(new DefaultTableModel());
-        anggotaEuclidean.setText("");
-        anggotaManhattan.setText("");
-        anggotaChebyshev.setText("");
-        waktuEuclidean.setText("");
-        waktuManhattan.setText("");
-        waktuChebyshev.setText("");
-        dbiEuclidean.setText("");
-        dbiManhattan.setText("");
-        dbiChebyshev.setText("");
+        anggotaE.setText("");
+        anggotaM.setText("");
+        anggotaC.setText("");
+        waktuE.setText("");
+        waktuM.setText("");
+        waktuC.setText("");
+        dbiE.setText("");
+        dbiM.setText("");
+        dbiC.setText("");
     }//GEN-LAST:event_buttonRefreshActionPerformed
 
     private void buttonProsesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonProsesActionPerformed
-
-        if (nilairandom == null) {
+if(nilairandom == null) {
             JOptionPane.showMessageDialog(null, "Data Set atau Bobot Acak Kosong", "WARNING", JOptionPane.WARNING_MESSAGE);
-        } else {
+        }
+        else {            
+            int i, j;
+            int bBobot = nilairandom.length;
+            int kBobot = nilairandom[0].length;
+            int bData = nilai4.length;
             int jlhIterasi = comboIterasi.getSelectedIndex();
             int lajuawal = comboLajuAwal.getSelectedIndex();
-            OlahDokumen oldok = new OlahDokumen();
+            OlahData oldok = new OlahData();
             double alpha = oldok.readLajuAwal(lajuawal);
             int iterasi = oldok.readJumlahIterasi(jlhIterasi);
-
-            int clusterEuclidean[] = new int[nilai4.length];
-            double bobot_randomE[][] = new double[nilairandom.length][nilairandom[0].length];
-            bobot_randomE = nilairandom;
-
-            Praproses pra = new Praproses();
-            pra.cetak_double(bobot_randomE);
-
-            SelfOrganizingMap som = new SelfOrganizingMap();
-            System.out.println("Euclidean\n\n");
-            clusterEuclidean = som.testEuclidean(nilai4, bobot_randomE, alpha, iterasi);
-            System.out.println("\n\n");
+            System.out.println(iterasi);
+                        
+            double clusterEuclidean[][] = new double[bData][2];
+            double bobot_randomE[][] = new double[bBobot][kBobot];
+            double dbiE = 0;
             
-            //harusnya bobot_randomE ini idk berubah 
-            pra.cetak_double(bobot_randomE);
+            double clusterManhattan[][] = new double[bData][2];
+            double bobot_randomM[][] = new double[bBobot][kBobot]; 
+            double dbiM = 0;
             
-            anggotaEuclidean.setText("Data       Cluster\n");
-            for(int i=0; i<nilai4.length; i++){
-                anggotaEuclidean.append(" "+i +"           " + clusterEuclidean[i]+"\n");
+            double clusterChebyshev[][] = new double[bData][2];
+            double bobot_randomC[][] = new double[bBobot][kBobot];
+            double dbiC = 0;
+            
+            for (i = 0; i < bBobot; i++) {
+                for (j = 0; j < kBobot; j++) {
+                    bobot_randomE[i][j] = nilairandom[i][j];
+                    bobot_randomM[i][j] = nilairandom[i][j];
+                    bobot_randomC[i][j] = nilairandom[i][j];
+                }
             }
+            
+            Cetak ctk = new Cetak();
+            System.out.println("\nSebelum Proses\n");
+            ctk.cetak_double(bobot_randomE);
+            ctk.cetak_double(bobot_randomM);
+            ctk.cetak_double(bobot_randomC);
+            
+            SOM som = new SOM();
+            startE = System.nanoTime();
+            clusterEuclidean = som.testEuclidean(nilai4, bobot_randomE, alpha, iterasi);
+            endE = System.nanoTime();
+            int[][] jlhClusterE = new int[clusterEuclidean.length][2];
+            
+            startM = System.nanoTime();
+            clusterManhattan = som.testManhattan(nilai4, bobot_randomM, alpha, iterasi);
+            endM = System.nanoTime();
+            int[][] jlhClusterM = new int[clusterManhattan.length][2];
+            
+            startC = System.nanoTime();
+            clusterChebyshev = som.testChebyshev(nilai4, bobot_randomC, alpha, iterasi);
+            endC = System.nanoTime();
+            int[][] jlhClusterC = new int[clusterChebyshev.length][2];
+            
+            System.out.println("\n\nSetelah Proses\n");
+            ctk.cetak_double(bobot_randomE);
+            ctk.cetak_double(bobot_randomM);
+            ctk.cetak_double(bobot_randomC);          
+            
+            DBI idb = new DBI();
+            
+            jlhClusterE = idb.amount(clusterEuclidean);
+            jlhClusterM = idb.amount(clusterManhattan);
+            jlhClusterC = idb.amount(clusterChebyshev);            
+            
+            dbiE = idb.value(clusterEuclidean);
+            dbiM = idb.value(clusterManhattan);
+            dbiC = idb.value(clusterChebyshev);         
+            
+            waktuE.setText((endE - startE) + " ns");            
+            waktuM.setText((endM - startM) + " ns");
+            waktuC.setText((endC - startC) + " ns");
+            
+//            DecimalUtils du = new DecimalUtils();
+//            dbiEuclidean.setText(""+du.round(dbiE, 3));
+//            dbiManhattan.setText(""+du.round(dbiM, 3));
+//            dbiChebyshev.setText(""+du.round(dbiC, 3));
+            
+            anggotaE.setText("Data       Cluster\n");
+            for(i=0; i<bData; i++) {
+                anggotaE.append(" " + i + "           " + (int) clusterEuclidean[i][0] + "\n");
+            }
+            anggotaE.append("\n");
+            for(i=0; i<jlhClusterE.length; i++){
+                anggotaE.append("Cluster "+jlhClusterE[i][0]+" : "+jlhClusterE[i][1]+"\n");
+            }
+            
+            anggotaM.setText("Data       Cluster\n");
+            for(i=0; i<bData; i++) {
+                anggotaM.append(" " + i + "           " + (int) clusterManhattan[i][0] + "\n");
+            }
+            anggotaM.append("\n");
+            for(i=0; i<jlhClusterM.length; i++){
+                anggotaM.append("Cluster "+jlhClusterM[i][0]+" : "+jlhClusterM[i][1]+"\n");
+            }
+            
+            anggotaC.setText("Data       Cluster\n");
+            for(i=0; i<bData; i++) {
+                anggotaC.append(" " + i + "           " + (int) clusterChebyshev[i][0] + "\n");
+            }
+            anggotaC.append("\n");
+            for(i=0; i<jlhClusterC.length; i++){
+                anggotaC.append("Cluster "+jlhClusterC[i][0]+" : "+jlhClusterC[i][1]+"\n");
+            }
+            
+            this.startE = 0;
+            this.endE = 0;
+            this.startM = 0;
+            this.endM = 0;
+            this.startC = 0;
+            this.endC = 0;
         }
 
     }//GEN-LAST:event_buttonProsesActionPerformed
@@ -533,7 +631,7 @@ public class Form1 extends javax.swing.JFrame {
             nilairandom = null;
             tableRandom.setModel(new DefaultTableModel());
             int kodeCluster = comboCluster.getSelectedIndex();
-            OlahDokumen oldok = new OlahDokumen();
+            OlahData oldok = new OlahData();
             int jlhCluster = oldok.readJumlahCluster(kodeCluster);
             Matrix m = new Matrix();
             nilairandom = m.randomValue(jlhCluster, nilai);
@@ -544,40 +642,19 @@ public class Form1 extends javax.swing.JFrame {
 
 
     private void buttonDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDataActionPerformed
-        // TODO add your handling code here:
-        //getselected data
-        String dataname = "";
-        dataname = comboData.getSelectedItem().toString();
-        System.out.println("Dataset = " + dataname);
-
-        Praproses praproses = new Praproses();
+        nilai = null;
+        nilai2 = null;
+        nilai3 = null;
+        nilai4 = null;
+        int kodeData;
+        kodeData = comboData.getSelectedIndex();
         tableData.setModel(new DefaultTableModel());
-
-        //loaddata
-        nilai = praproses.dataValue(dataname);
-        praproses.cetak(nilai);
-        System.out.println("\n\n\n");
-
-        //pembobotan part
-        System.out.println("====Weighted Process===");
+        Praproses praproses = new Praproses();
+        nilai = praproses.dataValue(kodeData);
         nilai2 = praproses.pembobotan(nilai);
-        praproses.cetak(nilai2);
-        System.out.println("\n\n\n");
-
-        //checking missing value
-        System.out.println("====Checking Missing Value===");
         nilai3 = praproses.pengecekanMissingValue(nilai2);
-        praproses.cetak(nilai3);
-        System.out.println("\n\n\n");
-
-        //Normalization
-        System.out.println("====Normalization Process====");
         nilai4 = praproses.normalisasi(nilai3);
-        praproses.cetak_double(nilai4);
-        System.out.println("\n\n\n");
-        
         loadDataMatrix(nilai4);
-        
         buttonData.setEnabled(false);
     }//GEN-LAST:event_buttonDataActionPerformed
 
@@ -630,14 +707,22 @@ public class Form1 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Form1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Form1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Form1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Form1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -650,15 +735,15 @@ public class Form1 extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Form1().setVisible(true);
+                new MainForm().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea anggotaChebyshev;
-    private javax.swing.JTextArea anggotaEuclidean;
-    private javax.swing.JTextArea anggotaManhattan;
+    private javax.swing.JTextArea anggotaC;
+    private javax.swing.JTextArea anggotaE;
+    private javax.swing.JTextArea anggotaM;
     private javax.swing.JButton buttonData;
     private javax.swing.JButton buttonProses;
     private javax.swing.JButton buttonRandom;
@@ -667,9 +752,9 @@ public class Form1 extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboData;
     private javax.swing.JComboBox<String> comboIterasi;
     private javax.swing.JComboBox<String> comboLajuAwal;
-    private javax.swing.JTextField dbiChebyshev;
-    private javax.swing.JTextField dbiEuclidean;
-    private javax.swing.JTextField dbiManhattan;
+    private javax.swing.JTextField dbiC;
+    private javax.swing.JTextField dbiE;
+    private javax.swing.JTextField dbiM;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -700,8 +785,8 @@ public class Form1 extends javax.swing.JFrame {
     private javax.swing.JTable jTable2;
     private javax.swing.JTable tableData;
     private javax.swing.JTable tableRandom;
-    private javax.swing.JTextField waktuChebyshev;
-    private javax.swing.JTextField waktuEuclidean;
-    private javax.swing.JTextField waktuManhattan;
+    private javax.swing.JTextField waktuC;
+    private javax.swing.JTextField waktuE;
+    private javax.swing.JTextField waktuM;
     // End of variables declaration//GEN-END:variables
 }

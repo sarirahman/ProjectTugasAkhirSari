@@ -114,14 +114,14 @@
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="waktuEuclidean" min="-2" pref="99" max="-2" attributes="0"/>
+                                              <Component id="waktuE" min="-2" pref="99" max="-2" attributes="0"/>
                                               <Group type="102" alignment="0" attributes="0">
                                                   <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                                                   <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="waktuManhattan" min="-2" pref="99" max="-2" attributes="0"/>
+                                          <Component id="waktuM" min="-2" pref="99" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" attributes="0">
                                           <Group type="103" groupAlignment="0" attributes="0">
@@ -140,11 +140,11 @@
                                           </Group>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
-                                          <Component id="dbiEuclidean" min="-2" pref="99" max="-2" attributes="0"/>
+                                          <Component id="dbiE" min="-2" pref="99" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="dbiManhattan" min="-2" pref="99" max="-2" attributes="0"/>
+                                          <Component id="dbiM" min="-2" pref="99" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="dbiChebyshev" min="-2" pref="99" max="-2" attributes="0"/>
+                                          <Component id="dbiC" min="-2" pref="99" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
@@ -164,7 +164,7 @@
                                                   <Component id="jScrollPane3" min="-2" pref="98" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
                                                   <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Component id="waktuChebyshev" min="-2" pref="99" max="-2" attributes="0"/>
+                                                      <Component id="waktuC" min="-2" pref="99" max="-2" attributes="0"/>
                                                       <Component id="jScrollPane8" min="-2" pref="99" max="-2" attributes="0"/>
                                                   </Group>
                                               </Group>
@@ -276,9 +276,9 @@
                           </Group>
                           <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="dbiChebyshev" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="dbiManhattan" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="dbiEuclidean" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="dbiC" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="dbiM" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="dbiE" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
@@ -290,9 +290,9 @@
                           </Group>
                           <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="waktuChebyshev" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="waktuManhattan" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="waktuEuclidean" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="waktuC" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="waktuM" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="waktuE" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                           <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
@@ -522,7 +522,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTextArea" name="anggotaManhattan">
+            <Component class="javax.swing.JTextArea" name="anggotaM">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
@@ -538,7 +538,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTextArea" name="anggotaChebyshev">
+            <Component class="javax.swing.JTextArea" name="anggotaC">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
@@ -554,7 +554,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTextArea" name="anggotaEuclidean">
+            <Component class="javax.swing.JTextArea" name="anggotaE">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
@@ -611,7 +611,7 @@
             <Property name="text" type="java.lang.String" value="Chebyshev"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="waktuChebyshev">
+        <Component class="javax.swing.JTextField" name="waktuC">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -643,7 +643,7 @@
             <Property name="text" type="java.lang.String" value="Chebyshev"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="waktuManhattan">
+        <Component class="javax.swing.JTextField" name="waktuM">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -651,7 +651,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="waktuEuclidean">
+        <Component class="javax.swing.JTextField" name="waktuE">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -659,7 +659,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="dbiChebyshev">
+        <Component class="javax.swing.JTextField" name="dbiC">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -667,7 +667,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="dbiManhattan">
+        <Component class="javax.swing.JTextField" name="dbiM">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -675,7 +675,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="dbiEuclidean">
+        <Component class="javax.swing.JTextField" name="dbiE">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">

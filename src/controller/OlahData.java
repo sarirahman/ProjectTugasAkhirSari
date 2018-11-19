@@ -13,14 +13,15 @@ import java.util.Scanner;
  *
  * @author User
  */
-public class OlahDokumen {
+public class OlahData {
+    
     public String readDokumenTeks(int kodefile){
         String filepath = "";
         switch(kodefile){
-            case 0 : filepath = "E:\\Tugas Akhir\\Data Set\\iris\\iris.txt"; break;
-            case 1 : filepath = "E:\\Tugas Akhir\\Data Set\\wine\\wine.txt"; break;
-            case 2 : filepath = "E:\\Tugas Akhir\\Data Set\\Evaluation Car\\cardata.txt"; break;
-            case 3 : filepath = "E:\\Tugas Akhir\\Data Set\\abalone\\abaloneData.txt"; break;
+            case 0 : filepath = "C:\\Users\\User\\Documents\\NetBeansProjects\\ProjectTA\\src\\dataset\\iris.txt"; break;
+            case 1 : filepath = "C:\\Users\\User\\Documents\\NetBeansProjects\\ProjectTA\\src\\dataset\\wine.txt"; break;
+            case 2 : filepath = "C:\\Users\\User\\Documents\\NetBeansProjects\\ProjectTA\\src\\dataset\\cardata.txt"; break;
+            case 3 : filepath = "C:\\Users\\User\\Documents\\NetBeansProjects\\ProjectTA\\src\\dataset\\abaloneData.txt"; break;
         }
         return filepath;
     }
@@ -49,22 +50,22 @@ public class OlahDokumen {
     }
     
     public int readJumlahCluster(int kode){
-        int jlhIterasi = 0;
+        int jlhCluster = 0;
         switch(kode){
-            case 0 : jlhIterasi = 3; break;
-            case 1 : jlhIterasi = 4; break;
-            case 2 : jlhIterasi = 5; break;
-            case 3 : jlhIterasi = 6; break;
-            case 4 : jlhIterasi = 7; break;
-            case 5 : jlhIterasi = 8; break;
-            case 6 : jlhIterasi = 9; break;
-            case 7 : jlhIterasi = 10; break;
-            case 8 : jlhIterasi = 11; break;
-            case 9 : jlhIterasi = 12; break;
-            case 10 : jlhIterasi = 13; break;
-            case 11 : jlhIterasi = 14; break;
-            case 12 : jlhIterasi = 15; break;            
+            case 0 : jlhCluster = 3; break;
+            case 1 : jlhCluster = 4; break;
+            case 2 : jlhCluster = 5; break;
+            case 3 : jlhCluster = 6; break;
+            case 4 : jlhCluster = 7; break;
+            case 5 : jlhCluster = 8; break;
+            case 6 : jlhCluster = 9; break;
+            case 7 : jlhCluster = 10; break;
+            case 8 : jlhCluster = 11; break;
+            case 9 : jlhCluster = 12; break;
+            case 10 : jlhCluster = 13; break;
+            case 11 : jlhCluster = 14; break;
+            case 12 : jlhCluster = 15; break;            
         }
-        return jlhIterasi;
+        return jlhCluster;
     }
 }
