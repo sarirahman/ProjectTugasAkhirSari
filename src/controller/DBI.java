@@ -87,7 +87,30 @@ public class DBI {
         double hasil = rMax/list.length;
         return hasil;
     }
-    
+    public int [][] amount2(double cluster[][],String jc){
+        int jcluster = Integer.parseInt(jc);
+        int list[][] = new int [jcluster][2];
+        int[] temp = new int[jcluster];
+        int i,j,counter=0;
+        
+        for(i=0; i<jcluster; i++){
+            temp[i] = i;
+            list[i][0]=i;
+        }
+        
+        for(i=0;i<jcluster;i++){
+            for(j=0;j<cluster.length;j++){
+                if(temp[i]==cluster[j][0]){
+                    counter++;
+                }
+            }
+            list[i][1]=counter;
+            counter=0;
+        }
+       
+        
+        return list;
+    }
     public int[][] amount(double cluster[][]){
         List<Integer> tmp2 = new ArrayList<Integer>();
         int i,j;
@@ -130,5 +153,47 @@ public class DBI {
 //        }
         return list;
     }
-    
+    public int[][] amount3(double cluster[][],String jc){
+        int jcluster = Integer.parseInt(jc);
+        List<Integer> tmp2 = new ArrayList<Integer>();
+        int i,j;
+        int counter=0;
+        int data2[] = new int[cluster.length];
+        
+        for(i=0; i<cluster.length; i++){
+            data2[i] = (int) cluster[i][0];
+        }
+        
+        Arrays.sort(data2);
+        
+        for(i=0;i<cluster.length;i++){
+            tmp2.add(data2[i]);
+        }
+        
+        tmp2 = tmp2.stream().distinct().collect(Collectors.toList());
+        
+        int list[][] = new int[tmp2.size()][2];
+        
+        for(i=0;i<list.length;i++){
+            list[i][0] = tmp2.get(i);
+        }
+        
+        for(i=0;i<list.length;i++){
+            for(j=0;j<cluster.length;j++){
+                if(data2[j]==list[i][0]){
+                    counter++;
+                }
+            }
+            list[i][1]=counter;
+            counter=0;
+        }
+        
+//        for(i=0;i<list.length;i++){
+//            for(j=0;j<list[0].length;j++){
+//                System.out.print(list[i][j]+" ");
+//            }
+//            System.out.println("");
+//        }
+        return list;
+    }
 }

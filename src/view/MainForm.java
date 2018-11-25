@@ -555,7 +555,7 @@ public class MainForm extends javax.swing.JFrame {
             
             double clusterEuclidean[][] = som.testEuclidean(nilai4, bobot_randomE, alpha, iterasi);
 
-            double[][] jlhClusterE = new double[clusterEuclidean.length][2];
+            int[][] jlhClusterE = new int[clusterEuclidean.length][2];
           
             double clusterManhattan[][] = som.testManhattan(nilai4, bobot_randomM, alpha, iterasi);
   
@@ -575,11 +575,14 @@ public class MainForm extends javax.swing.JFrame {
             ctk.cetak_double(bobot_randomC);         
             
            
-            System.out.println("For Euclidean ");
-            ctk.cetak_double(clusterEuclidean);
+//            System.out.println("For Euclidean ");
+//            ctk.cetak_double(clusterEuclidean);
 //            ctk.cetak_double(jlhClusterE);
-//            DBI idb = new DBI();
+            DBI idb = new DBI();
 //            
+            jlhClusterE = idb.amount2(clusterEuclidean, comboCluster.getSelectedItem().toString());
+            jlhClusterM = idb.amount2(clusterManhattan, comboCluster.getSelectedItem().toString());
+            jlhClusterC = idb.amount2(clusterChebyshev, comboCluster.getSelectedItem().toString());
 //            jlhClusterE = idb.amount(clusterEuclidean);
 //            jlhClusterM = idb.amount(clusterManhattan);
 //            jlhClusterC = idb.amount(clusterChebyshev);            
