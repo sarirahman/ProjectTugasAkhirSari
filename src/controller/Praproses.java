@@ -26,11 +26,8 @@ public class Praproses {
     
     private int sKolom[];
     
-    public String[][] dataValue (int kode){
-        
-        OlahData olDok = new OlahData();
-        String filepath = olDok.readDokumenTeks(kode);
-        File file = new File(filepath);
+    public String[][] dataValue (String data){
+        File file = new File("src/Dataset/"+data+".txt");
         String nilai[][] = null;
         
         try {

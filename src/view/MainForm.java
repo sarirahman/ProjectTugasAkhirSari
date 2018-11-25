@@ -505,7 +505,7 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonRefreshActionPerformed
 
     private void buttonProsesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonProsesActionPerformed
-if(nilairandom == null) {
+        if(nilairandom == null) {
             JOptionPane.showMessageDialog(null, "Data Set atau Bobot Acak Kosong", "WARNING", JOptionPane.WARNING_MESSAGE);
         }
         else {            
@@ -646,11 +646,14 @@ if(nilairandom == null) {
         nilai2 = null;
         nilai3 = null;
         nilai4 = null;
-        int kodeData;
-        kodeData = comboData.getSelectedIndex();
+        
+        String data;
+        
+        data = comboData.getSelectedItem().toString();
+        System.out.println("Data set adalah = "+data);
         tableData.setModel(new DefaultTableModel());
         Praproses praproses = new Praproses();
-        nilai = praproses.dataValue(kodeData);
+        nilai = praproses.dataValue(data);
         nilai2 = praproses.pembobotan(nilai);
         nilai3 = praproses.pengecekanMissingValue(nilai2);
         nilai4 = praproses.normalisasi(nilai3);
