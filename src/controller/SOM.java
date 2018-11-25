@@ -52,7 +52,6 @@ public class SOM {
         
         return array[min]; // position of the first largest found
     }
-    
 
     public double[][] testEuclidean(double data[][], double bobot[][], double alpha, int iterasi) {
         int baris_nilai = data.length;
@@ -121,12 +120,11 @@ public class SOM {
             for (i = 0; i < baris_nilai; i++) {
                 for (j = 0; j < baris_bobot; j++) {
                     for (k = 0; k < kolom; k++) {
-                        sum = sum +(Math.abs(data[i][k] - bobot[j][k]));
-                        hasil = Math.sqrt(sum);
+                        hasil = hasil + Math.abs(data[i][k]-bobot[j][k]);
                     }
 //                    System.out.println("Hasil = "+hasil);
                     hasil2[j] = hasil;
-                    sum=0;
+//                    sum=0;
                     hasil=0;
                 }
                 min_bobot = (int) getIndexOfMinimum(hasil2);
