@@ -523,15 +523,14 @@ public class MainForm extends javax.swing.JFrame {
             
             System.out.println("Jumlah Iterasi = "+iterasi);
                         
-            double clusterEuclidean[][] = new double[bData][2];
+            
             double bobot_randomE[][] = new double[bBobot][kBobot];
             double dbiE = 0;
             
-            double clusterManhattan[][] = new double[bData][2];
             double bobot_randomM[][] = new double[bBobot][kBobot]; 
             double dbiM = 0;
             
-            double clusterChebyshev[][] = new double[bData][2];
+            
             double bobot_randomC[][] = new double[bBobot][kBobot];
             double dbiC = 0;
             
@@ -553,16 +552,16 @@ public class MainForm extends javax.swing.JFrame {
             ctk.cetak_double(bobot_randomC);
             
             SOM som = new SOM();
-
-            clusterEuclidean = som.testEuclidean(nilai4, bobot_randomE, alpha, iterasi);
+            
+            double clusterEuclidean[][] = som.testEuclidean(nilai4, bobot_randomE, alpha, iterasi);
 
             double[][] jlhClusterE = new double[clusterEuclidean.length][2];
           
-            clusterManhattan = som.testManhattan(nilai4, bobot_randomM, alpha, iterasi);
+            double clusterManhattan[][] = som.testManhattan(nilai4, bobot_randomM, alpha, iterasi);
   
             int[][] jlhClusterM = new int[clusterManhattan.length][2];
       
-//            clusterChebyshev = som.testChebyshev(nilai4, bobot_randomC, alpha, iterasi);
+            double clusterChebyshev[][] = som.testChebyshev(nilai4, bobot_randomC, alpha, iterasi);
     
             int[][] jlhClusterC = new int[clusterChebyshev.length][2];
             
@@ -575,9 +574,9 @@ public class MainForm extends javax.swing.JFrame {
             System.out.println("\nBobot random Chebyshev : ");
             ctk.cetak_double(bobot_randomC);         
             
-            
+           
             System.out.println("For Euclidean ");
-//            ctk.cetak_double(jlhClusterE);
+            ctk.cetak_double(clusterEuclidean);
 //            ctk.cetak_double(jlhClusterE);
 //            DBI idb = new DBI();
 //            
@@ -588,10 +587,10 @@ public class MainForm extends javax.swing.JFrame {
 //            dbiE = idb.value(clusterEuclidean);
 //            dbiM = idb.value(clusterManhattan);
 //            dbiC = idb.value(clusterChebyshev);         
-            
-            waktuE.setText((endE - startE) + " ns");            
-            waktuM.setText((endM - startM) + " ns");
-            waktuC.setText((endC - startC) + " ns");
+//            
+//            waktuE.setText((endE - startE) + " ns");            
+//            waktuM.setText((endM - startM) + " ns");
+//            waktuC.setText((endC - startC) + " ns");
             
 //            DecimalUtils du = new DecimalUtils();
 //            dbiEuclidean.setText(""+du.round(dbiE, 3));
@@ -625,12 +624,12 @@ public class MainForm extends javax.swing.JFrame {
                 anggotaC.append("Cluster "+jlhClusterC[i][0]+" : "+jlhClusterC[i][1]+"\n");
             }
             
-            this.startE = 0;
-            this.endE = 0;
-            this.startM = 0;
-            this.endM = 0;
-            this.startC = 0;
-            this.endC = 0;
+//            this.startE = 0;
+//            this.endE = 0;
+//            this.startM = 0;
+//            this.endM = 0;
+//            this.startC = 0;
+//            this.endC = 0;
         }
 
     }//GEN-LAST:event_buttonProsesActionPerformed
