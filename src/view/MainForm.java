@@ -513,12 +513,15 @@ public class MainForm extends javax.swing.JFrame {
             int bBobot = nilairandom.length;
             int kBobot = nilairandom[0].length;
             int bData = nilai4.length;
+            
             int jlhIterasi = comboIterasi.getSelectedIndex();
             int lajuawal = comboLajuAwal.getSelectedIndex();
+                        
             OlahData oldok = new OlahData();
             double alpha = oldok.readLajuAwal(lajuawal);
             int iterasi = oldok.readJumlahIterasi(jlhIterasi);
-            System.out.println(iterasi);
+            
+            System.out.println("Jumlah Iterasi = "+iterasi);
                         
             double clusterEuclidean[][] = new double[bData][2];
             double bobot_randomE[][] = new double[bBobot][kBobot];
@@ -541,31 +544,36 @@ public class MainForm extends javax.swing.JFrame {
             }
             
             Cetak ctk = new Cetak();
-            System.out.println("\nSebelum Proses\n");
+            System.out.println("\n====Sebelum Proses====\n");
+            System.out.println("Bobot random Euclidean : ");
             ctk.cetak_double(bobot_randomE);
+            System.out.println("\nBobot random Manhattan : ");
             ctk.cetak_double(bobot_randomM);
+            System.out.println("\nBobot random Chebyshev : ");
             ctk.cetak_double(bobot_randomC);
             
             SOM som = new SOM();
-            startE = System.nanoTime();
+
             clusterEuclidean = som.testEuclidean(nilai4, bobot_randomE, alpha, iterasi);
-            endE = System.nanoTime();
+
             int[][] jlhClusterE = new int[clusterEuclidean.length][2];
-            
-            startM = System.nanoTime();
+          
             clusterManhattan = som.testManhattan(nilai4, bobot_randomM, alpha, iterasi);
-            endM = System.nanoTime();
+  
             int[][] jlhClusterM = new int[clusterManhattan.length][2];
-            
-            startC = System.nanoTime();
-            clusterChebyshev = som.testChebyshev(nilai4, bobot_randomC, alpha, iterasi);
-            endC = System.nanoTime();
+      
+//            clusterChebyshev = som.testChebyshev(nilai4, bobot_randomC, alpha, iterasi);
+    
             int[][] jlhClusterC = new int[clusterChebyshev.length][2];
             
-            System.out.println("\n\nSetelah Proses\n");
+            System.out.println("\n\n====Setelah Proses====\n");
+            System.out.println("\nSebelum Proses\n");
+            System.out.println("Bobot random Euclidean : ");
             ctk.cetak_double(bobot_randomE);
+            System.out.println("\nBobot random Manhattan : ");
             ctk.cetak_double(bobot_randomM);
-            ctk.cetak_double(bobot_randomC);          
+            System.out.println("\nBobot random Chebyshev : ");
+            ctk.cetak_double(bobot_randomC);         
             
             DBI idb = new DBI();
             
