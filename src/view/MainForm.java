@@ -556,7 +556,7 @@ public class MainForm extends javax.swing.JFrame {
 
             clusterEuclidean = som.testEuclidean(nilai4, bobot_randomE, alpha, iterasi);
 
-            int[][] jlhClusterE = new int[clusterEuclidean.length][2];
+            double[][] jlhClusterE = new double[clusterEuclidean.length][2];
           
             clusterManhattan = som.testManhattan(nilai4, bobot_randomM, alpha, iterasi);
   
@@ -575,15 +575,19 @@ public class MainForm extends javax.swing.JFrame {
             System.out.println("\nBobot random Chebyshev : ");
             ctk.cetak_double(bobot_randomC);         
             
-            DBI idb = new DBI();
             
-            jlhClusterE = idb.amount(clusterEuclidean);
-            jlhClusterM = idb.amount(clusterManhattan);
-            jlhClusterC = idb.amount(clusterChebyshev);            
-            
-            dbiE = idb.value(clusterEuclidean);
-            dbiM = idb.value(clusterManhattan);
-            dbiC = idb.value(clusterChebyshev);         
+            System.out.println("For Euclidean ");
+//            ctk.cetak_double(jlhClusterE);
+//            ctk.cetak_double(jlhClusterE);
+//            DBI idb = new DBI();
+//            
+//            jlhClusterE = idb.amount(clusterEuclidean);
+//            jlhClusterM = idb.amount(clusterManhattan);
+//            jlhClusterC = idb.amount(clusterChebyshev);            
+////            
+//            dbiE = idb.value(clusterEuclidean);
+//            dbiM = idb.value(clusterManhattan);
+//            dbiC = idb.value(clusterChebyshev);         
             
             waktuE.setText((endE - startE) + " ns");            
             waktuM.setText((endM - startM) + " ns");

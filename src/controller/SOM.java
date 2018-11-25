@@ -36,7 +36,7 @@ public class SOM {
                 min = i;
             }
         }
-        return min; // position of the first largest found
+        return min; // position of the first smallest found
     }
     
     public double getValueOfMinimum(double[] array) {
@@ -77,16 +77,21 @@ public class SOM {
                         sum = sum + Math.pow(data[i][k] - bobot[j][k], 2);
                         hasil = Math.sqrt(sum);
                     }
+                    System.out.println("Hasil = "+hasil);
                     hasil2[j] = hasil;
+                    sum=0;
+                    hasil=0;
                 }
+                
                 min_bobot = (int) getIndexOfMinimum(hasil2);
+                min = getValueOfMinimum(hasil2);
                 //update bobot baru (wbaru) = (wjlama) + (alpha*(xi-wjlama))
                 for(l=0;l<bobot[0].length;l++){
                     bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
                 }
                 
-                data2[i][0]=min_bobot;
-                data2[i][1]=getValueOfMinimum(hasil2);
+                System.out.println("Winners = "+min_bobot+" and value distance ="+min);
+                
             }
             alpha = alpha * 0.5;
         }
@@ -116,16 +121,19 @@ public class SOM {
                         sum = sum +(Math.abs(data[i][k] - bobot[j][k]));
                         hasil = Math.sqrt(sum);
                     }
+                    System.out.println("Hasil = "+hasil);
                     hasil2[j] = hasil;
+                    sum=0;
+                    hasil=0;
                 }
                 min_bobot = (int) getIndexOfMinimum(hasil2);
+                min = getValueOfMinimum(hasil2);
                 //update bobot baru (wbaru) = (wjlama) + (alpha*(xi-wjlama))
                 for(l=0;l<bobot[0].length;l++){
                     bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
                 }
                 
-                data2[i][0]=min_bobot;
-                data2[i][1]=getValueOfMinimum(hasil2);
+                System.out.println("Winners = "+min_bobot+" and value distance ="+min);
             }
             alpha = alpha * 0.5;
         }
@@ -157,16 +165,19 @@ public class SOM {
                             hasil = sum;
                         }
                     }
+                    System.out.println("Hasil = "+hasil);
                     hasil2[j] = hasil;
+                    sum=0;
+                    hasil=0;
                 }
                 min_bobot = (int) getIndexOfMinimum(hasil2);
+                min = getValueOfMinimum(hasil2);
                 //update bobot baru (wbaru) = (wjlama) + (alpha*(xi-wjlama))
                 for(l=0;l<bobot[0].length;l++){
                     bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
                 }
                 
-                data2[i][0]=min_bobot;
-                data2[i][1]=getValueOfMinimum(hasil2);
+                System.out.println("Winners = "+min_bobot+" and value distance ="+min);
             }
             alpha = alpha * 0.5;
         }
