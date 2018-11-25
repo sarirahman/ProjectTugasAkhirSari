@@ -14,18 +14,6 @@ import java.util.Scanner;
  * @author User
  */
 public class OlahData {
-    
-    public String readDokumenTeks(int kodefile){
-        String filepath = "";
-        switch(kodefile){
-            case 0 : filepath = "C:\\Users\\User\\Documents\\NetBeansProjects\\ProjectTA\\src\\dataset\\iris.txt"; break;
-            case 1 : filepath = "C:\\Users\\User\\Documents\\NetBeansProjects\\ProjectTA\\src\\dataset\\wine.txt"; break;
-            case 2 : filepath = "C:\\Users\\User\\Documents\\NetBeansProjects\\ProjectTA\\src\\dataset\\cardata.txt"; break;
-            case 3 : filepath = "C:\\Users\\User\\Documents\\NetBeansProjects\\ProjectTA\\src\\dataset\\abaloneData.txt"; break;
-        }
-        return filepath;
-    }
-    
     public int readJumlahIterasi(int kode){
         int jlhIterasi = 0;
         switch(kode){
