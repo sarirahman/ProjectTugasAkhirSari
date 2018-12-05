@@ -7,6 +7,7 @@ package view;
 
 import controller.Cetak;
 import controller.DBI;
+import controller.DecimalUtils;
 import controller.Matrix;
 import controller.OlahData;
 import controller.Praproses;
@@ -14,15 +15,21 @@ import controller.SOM;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.time.Instant;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -33,15 +40,14 @@ public class MainForm extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      */
-//    private int kodeData;
     private String nilai[][] = null;
     private String nilai2[][] = null;
     private String nilai3[][] = null;
     private double nilai4[][] = null;
     private double nilairandom[][] = null;
-    private DefaultTableModel modelData, modelRandom, modelHasilCluster;
+    private DefaultTableModel modelData, modelRandom;    
     long startE = 0, endE = 0, startM = 0, endM = 0, startC = 0, endC = 0;
-
+    
     public MainForm() {
         initComponents();
         setResizable(false);
@@ -62,7 +68,6 @@ public class MainForm extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         comboData = new javax.swing.JComboBox<>();
@@ -93,16 +98,22 @@ public class MainForm extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        waktuC = new javax.swing.JTextField();
+        waktuChebyshev = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        waktuM = new javax.swing.JTextField();
-        waktuE = new javax.swing.JTextField();
-        dbiC = new javax.swing.JTextField();
-        dbiM = new javax.swing.JTextField();
-        dbiE = new javax.swing.JTextField();
+        waktuManhattan = new javax.swing.JTextField();
+        waktuEuclidean = new javax.swing.JTextField();
+        dbiChebyshev = new javax.swing.JTextField();
+        dbiManhattan = new javax.swing.JTextField();
+        dbiEuclidean = new javax.swing.JTextField();
         comboLajuAwal = new javax.swing.JComboBox<>();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -143,16 +154,18 @@ public class MainForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel6.setText("Program Clustering Data Menggunakan Algoritma Self Organizing Map");
-
         jLabel1.setText("Data :");
 
         jLabel3.setText("Jumlah Cluster :");
 
-        comboData.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Iris", "Wine", "Car Evaluation", "Abalone" }));
+        comboData.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Iris", "Wine", "Car", "Abalone" }));
+        comboData.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboDataItemStateChanged(evt);
+            }
+        });
 
-        comboCluster.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" }));
+        comboCluster.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "4", "5", "6" }));
 
         buttonData.setText("Set");
         buttonData.addActionListener(new java.awt.event.ActionListener() {
@@ -173,7 +186,7 @@ public class MainForm extends javax.swing.JFrame {
         jLabel5.setText("Laju Awal :");
 
         comboIterasi.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        comboIterasi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "100", "200", "300", "400", "500" }));
+        comboIterasi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5", "10", "20", "25", "50", "100" }));
         comboIterasi.setPreferredSize(new java.awt.Dimension(64, 30));
 
         buttonProses.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -196,7 +209,7 @@ public class MainForm extends javax.swing.JFrame {
         jLabel8.setText("Nilai DBI :");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel7.setText("Waktu Komputasi :");
+        jLabel7.setText("Waktu Komputasi (ns) :");
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel9.setText("Jumlah Anggota :");
@@ -254,8 +267,8 @@ public class MainForm extends javax.swing.JFrame {
         jLabel15.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel15.setText("Chebyshev");
 
-        waktuC.setEditable(false);
-        waktuC.setBackground(new java.awt.Color(255, 255, 255));
+        waktuChebyshev.setEditable(false);
+        waktuChebyshev.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel16.setText("Euclidean");
@@ -266,24 +279,81 @@ public class MainForm extends javax.swing.JFrame {
         jLabel18.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel18.setText("Chebyshev");
 
-        waktuM.setEditable(false);
-        waktuM.setBackground(new java.awt.Color(255, 255, 255));
+        waktuManhattan.setEditable(false);
+        waktuManhattan.setBackground(new java.awt.Color(255, 255, 255));
 
-        waktuE.setEditable(false);
-        waktuE.setBackground(new java.awt.Color(255, 255, 255));
+        waktuEuclidean.setEditable(false);
+        waktuEuclidean.setBackground(new java.awt.Color(255, 255, 255));
 
-        dbiC.setEditable(false);
-        dbiC.setBackground(new java.awt.Color(255, 255, 255));
+        dbiChebyshev.setEditable(false);
+        dbiChebyshev.setBackground(new java.awt.Color(255, 255, 255));
 
-        dbiM.setEditable(false);
-        dbiM.setBackground(new java.awt.Color(255, 255, 255));
+        dbiManhattan.setEditable(false);
+        dbiManhattan.setBackground(new java.awt.Color(255, 255, 255));
 
-        dbiE.setEditable(false);
-        dbiE.setBackground(new java.awt.Color(255, 255, 255));
+        dbiEuclidean.setEditable(false);
+        dbiEuclidean.setBackground(new java.awt.Color(255, 255, 255));
 
         comboLajuAwal.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         comboLajuAwal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0.4", "0.6", "0.7", "0.9" }));
         comboLajuAwal.setPreferredSize(new java.awt.Dimension(64, 30));
+
+        jPanel3.setBackground(new java.awt.Color(153, 186, 212));
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel6.setText("Program Clustering Data Menggunakan Algoritma Self Organizing Map");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(217, 217, 217)
+                .addComponent(jLabel6)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jLabel6)
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+
+        jPanel4.setBackground(new java.awt.Color(153, 186, 212));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel2.setText("Copyright © 2018");
+
+        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel19.setText("Tri Kurnia Sari");
+
+        jLabel20.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel20.setText("by");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(332, 332, 332)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel20)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel19)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel19)
+                    .addComponent(jLabel20))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -292,40 +362,25 @@ public class MainForm extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(227, 227, 227)
-                        .addComponent(jLabel6))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
+                                .addContainerGap()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(1, 1, 1)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(waktuE, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(waktuEuclidean, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGap(23, 23, 23)
                                                 .addComponent(jLabel13)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(waktuM, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(waktuManhattan, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel1)
-                                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(dbiEuclidean, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(comboData, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(comboCluster, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(buttonRandom, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
-                                            .addComponent(buttonData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(dbiE, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(dbiManhattan, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(dbiM, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(dbiC, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(dbiChebyshev, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(23, 23, 23)
                                         .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -343,11 +398,8 @@ public class MainForm extends javax.swing.JFrame {
                                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(waktuC, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(waktuChebyshev, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(102, 102, 102)
-                                        .addComponent(jLabel7))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(24, 24, 24)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -371,23 +423,40 @@ public class MainForm extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(comboIterasi, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(comboLajuAwal, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                            .addComponent(comboLajuAwal, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel1)
+                                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(comboData, 0, 113, Short.MAX_VALUE)
+                                            .addComponent(comboCluster, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGap(18, 18, Short.MAX_VALUE)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(buttonRandom, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(buttonData, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(53, 53, 53)
                                 .addComponent(buttonRefresh)
                                 .addGap(72, 72, 72)
                                 .addComponent(buttonProses, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(18, 18, 18))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(93, 93, 93)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabel6)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -425,9 +494,9 @@ public class MainForm extends javax.swing.JFrame {
                             .addComponent(jLabel12))
                         .addGap(3, 3, 3)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(dbiC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dbiM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dbiE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(dbiChebyshev, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dbiManhattan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dbiEuclidean, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -437,9 +506,9 @@ public class MainForm extends javax.swing.JFrame {
                             .addComponent(jLabel15))
                         .addGap(3, 3, 3)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(waktuC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(waktuM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(waktuE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(waktuChebyshev, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(waktuManhattan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(waktuEuclidean, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(24, 24, 24)
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -454,20 +523,21 @@ public class MainForm extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jScrollPane9, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         pack();
@@ -496,41 +566,36 @@ public class MainForm extends javax.swing.JFrame {
         anggotaE.setText("");
         anggotaM.setText("");
         anggotaC.setText("");
-        waktuE.setText("");
-        waktuM.setText("");
-        waktuC.setText("");
-        dbiE.setText("");
-        dbiM.setText("");
-        dbiC.setText("");
+        waktuEuclidean.setText("");
+        waktuManhattan.setText("");
+        waktuChebyshev.setText("");
+        dbiEuclidean.setText("");
+        dbiManhattan.setText("");
+        dbiChebyshev.setText("");
     }//GEN-LAST:event_buttonRefreshActionPerformed
 
-    private void buttonProsesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonProsesActionPerformed
-        if(nilairandom == null) {
-            JOptionPane.showMessageDialog(null, "Data Set atau Bobot Acak Kosong", "WARNING", JOptionPane.WARNING_MESSAGE);
-        }
-        else {            
-            int i, j;
+    private void prosesClustering(){
+        int i, j;
             int bBobot = nilairandom.length;
             int kBobot = nilairandom[0].length;
             int bData = nilai4.length;
-            
             int jlhIterasi = comboIterasi.getSelectedIndex();
             int lajuawal = comboLajuAwal.getSelectedIndex();
-                        
             OlahData oldok = new OlahData();
             double alpha = oldok.readLajuAwal(lajuawal);
             int iterasi = oldok.readJumlahIterasi(jlhIterasi);
-            
-            System.out.println("Jumlah Iterasi = "+iterasi);
+            System.out.println("Jumlah iterasi = "+iterasi);
+            System.out.println("Alpha = "+alpha);            
                         
-            
+            double clusterEuclidean[][] = new double[bData][2];
             double bobot_randomE[][] = new double[bBobot][kBobot];
             double dbiE = 0;
             
+            double clusterManhattan[][] = new double[bData][2];
             double bobot_randomM[][] = new double[bBobot][kBobot]; 
             double dbiM = 0;
             
-            
+            double clusterChebyshev[][] = new double[bData][2];
             double bobot_randomC[][] = new double[bBobot][kBobot];
             double dbiC = 0;
             
@@ -542,63 +607,51 @@ public class MainForm extends javax.swing.JFrame {
                 }
             }
             
-            Cetak ctk = new Cetak();
-            System.out.println("\n====Sebelum Proses====\n");
-            System.out.println("Bobot random Euclidean : ");
-            ctk.cetak_double(bobot_randomE);
-            System.out.println("\nBobot random Manhattan : ");
-            ctk.cetak_double(bobot_randomM);
-            System.out.println("\nBobot random Chebyshev : ");
-            ctk.cetak_double(bobot_randomC);
+//            Cetak ctk = new Cetak();
+//            System.out.println("\nSebelum Proses\n");
+//            ctk.cetak_double(bobot_randomE);
+//            ctk.cetak_double(bobot_randomM);
+//            ctk.cetak_double(bobot_randomC);
             
             SOM som = new SOM();
-            
-            double clusterEuclidean[][] = som.testEuclidean(nilai4, bobot_randomE, alpha, iterasi);
-
+            startE = System.nanoTime();
+            clusterEuclidean = som.testEuclidean(nilai4, bobot_randomE, alpha, iterasi);
+            endE = System.nanoTime();
             int[][] jlhClusterE = new int[clusterEuclidean.length][2];
-          
-            double clusterManhattan[][] = som.testManhattan(nilai4, bobot_randomM, alpha, iterasi);
-  
+            
+            startM = System.nanoTime();
+            clusterManhattan = som.testManhattan(nilai4, bobot_randomM, alpha, iterasi);
+            endM = System.nanoTime();
             int[][] jlhClusterM = new int[clusterManhattan.length][2];
-      
-            double clusterChebyshev[][] = som.testChebyshev(nilai4, bobot_randomC, alpha, iterasi);
-    
+            
+            startC = System.nanoTime();
+            clusterChebyshev = som.testChebyshev(nilai4, bobot_randomC, alpha, iterasi);
+            endC = System.nanoTime();
             int[][] jlhClusterC = new int[clusterChebyshev.length][2];
             
-            System.out.println("\n\n====Setelah Proses====\n");
-            System.out.println("\nSebelum Proses\n");
-            System.out.println("Bobot random Euclidean : ");
-            ctk.cetak_double(bobot_randomE);
-            System.out.println("\nBobot random Manhattan : ");
-            ctk.cetak_double(bobot_randomM);
-            System.out.println("\nBobot random Chebyshev : ");
-            ctk.cetak_double(bobot_randomC);         
+//            System.out.println("\n\nSetelah Proses\n");
+//            ctk.cetak_double(bobot_randomE);
+//            ctk.cetak_double(bobot_randomM);
+//            ctk.cetak_double(bobot_randomC);          
             
-           
-//            System.out.println("For Euclidean ");
-//            ctk.cetak_double(clusterEuclidean);
-//            ctk.cetak_double(jlhClusterE);
             DBI idb = new DBI();
-//            
-            jlhClusterE = idb.amount2(clusterEuclidean, comboCluster.getSelectedItem().toString());
-            jlhClusterM = idb.amount2(clusterManhattan, comboCluster.getSelectedItem().toString());
-            jlhClusterC = idb.amount2(clusterChebyshev, comboCluster.getSelectedItem().toString());
-//            jlhClusterE = idb.amount(clusterEuclidean);
-//            jlhClusterM = idb.amount(clusterManhattan);
-//            jlhClusterC = idb.amount(clusterChebyshev);            
-////            
-//            dbiE = idb.value(clusterEuclidean);
-//            dbiM = idb.value(clusterManhattan);
-//            dbiC = idb.value(clusterChebyshev);         
-//            
-//            waktuE.setText((endE - startE) + " ns");            
-//            waktuM.setText((endM - startM) + " ns");
-//            waktuC.setText((endC - startC) + " ns");
             
-//            DecimalUtils du = new DecimalUtils();
-//            dbiEuclidean.setText(""+du.round(dbiE, 3));
-//            dbiManhattan.setText(""+du.round(dbiM, 3));
-//            dbiChebyshev.setText(""+du.round(dbiC, 3));
+            jlhClusterE = idb.amount(clusterEuclidean, bBobot);
+            jlhClusterM = idb.amount(clusterManhattan, bBobot);
+            jlhClusterC = idb.amount(clusterChebyshev, bBobot);            
+            
+            dbiE = idb.value(clusterEuclidean);
+            dbiM = idb.value(clusterManhattan);
+            dbiC = idb.value(clusterChebyshev);
+            
+            waktuEuclidean.setText(""+(endE - startE));            
+            waktuManhattan.setText(""+(endM - startM));
+            waktuChebyshev.setText(""+(endC - startC));
+            
+            DecimalUtils du = new DecimalUtils();
+            dbiEuclidean.setText(""+du.round(dbiE, 5));
+            dbiManhattan.setText(""+du.round(dbiM, 5));
+            dbiChebyshev.setText(""+du.round(dbiC, 5));
             
             anggotaE.setText("Data       Cluster\n");
             for(i=0; i<bData; i++) {
@@ -626,45 +679,63 @@ public class MainForm extends javax.swing.JFrame {
             for(i=0; i<jlhClusterC.length; i++){
                 anggotaC.append("Cluster "+jlhClusterC[i][0]+" : "+jlhClusterC[i][1]+"\n");
             }
+            saveData(comboData.getSelectedIndex(), bBobot, alpha, iterasi, du.round(dbiE, 5), du.round(dbiM, 5), du.round(dbiE, 5), endE - startE, endM - startM, endC - startC);
             
-//            this.startE = 0;
-//            this.endE = 0;
-//            this.startM = 0;
-//            this.endM = 0;
-//            this.startC = 0;
-//            this.endC = 0;
+            this.startE = 0; this.endE = 0; this.startM = 0; this.endM = 0; this.startC = 0; this.endC = 0;
+    }
+    
+    private void saveData(int kodeData, int kodeCluster, double alpha, int iterasi,
+            double dbiE, double dbiM, double dbiC, long waktuE, long waktuM, long waktuC){
+        
+        File file = new File("src/output/"+kodeData + kodeCluster+".txt");
+        try(FileWriter fw = new FileWriter(file, true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        PrintWriter out = new PrintWriter(bw)) {
+            out.println(alpha+" "+iterasi+" "+dbiE+" "+dbiM+" "+dbiC+" "+waktuE+" "+waktuM+" "+waktuC);
         }
-
+        catch (IOException e) {
+            System.out.println("Error");
+        }
+        
+    }
+    
+    private void buttonProsesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonProsesActionPerformed
+        
+        if(nilairandom == null) {
+            JOptionPane.showMessageDialog(null, "Data Set atau Bobot Acak Kosong", "WARNING", JOptionPane.WARNING_MESSAGE);
+        }
+        else {            
+            prosesClustering();
+        }
     }//GEN-LAST:event_buttonProsesActionPerformed
-
+    
+    private void prosesRandom(){
+        nilairandom = null;
+        tableRandom.setModel(new DefaultTableModel());
+        int kodeCluster = comboCluster.getSelectedIndex();
+        int kodeData = comboData.getSelectedIndex();
+        OlahData oldok = new OlahData();
+        int jlhCluster = oldok.readJumlahCluster(kodeCluster, kodeData);
+        Matrix m = new Matrix();
+        nilairandom = m.randomValue(jlhCluster, nilai);
+        loadDataRandom(nilairandom);
+        System.out.println("Jumlah cluster = "+jlhCluster);
+    }
+    
     private void buttonRandomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRandomActionPerformed
-
         if (nilai4 == null) {
             JOptionPane.showMessageDialog(null, "Data Set Kosong", "WARNING", JOptionPane.WARNING_MESSAGE);
         } else {
-            nilairandom = null;
-            tableRandom.setModel(new DefaultTableModel());
-            int kodeCluster = comboCluster.getSelectedIndex();
-            OlahData oldok = new OlahData();
-            int jlhCluster = oldok.readJumlahCluster(kodeCluster);
-            Matrix m = new Matrix();
-            nilairandom = m.randomValue(jlhCluster, nilai);
-            loadDataRandom(nilairandom);
+            prosesRandom();
         }
 
     }//GEN-LAST:event_buttonRandomActionPerformed
-
-
-    private void buttonDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDataActionPerformed
-        nilai = null;
-        nilai2 = null;
-        nilai3 = null;
-        nilai4 = null;
-        
+    
+    private void prosesData(){
+        nilai = null; nilai2 = null; nilai3 = null; nilai4 = null;
         String data;
         
         data = comboData.getSelectedItem().toString();
-        System.out.println("Data set adalah = "+data);
         tableData.setModel(new DefaultTableModel());
         Praproses praproses = new Praproses();
         nilai = praproses.dataValue(data);
@@ -673,15 +744,38 @@ public class MainForm extends javax.swing.JFrame {
         nilai4 = praproses.normalisasi(nilai3);
         loadDataMatrix(nilai4);
         buttonData.setEnabled(false);
+        System.out.println("Data set adalah = "+data);
+        System.out.println("Jumlah data = "+nilai4.length);
+    }
+    
+    private void buttonDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDataActionPerformed
+        prosesData();
     }//GEN-LAST:event_buttonDataActionPerformed
 
-    private void loadDataMatrix(double data[][]) {
-
+    private void comboDataItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboDataItemStateChanged
+        // TODO add your handling code here:
+        if(comboData.getSelectedIndex() == 0 || comboData.getSelectedIndex() == 1 || comboData.getSelectedIndex() == 2){
+            comboCluster.removeAllItems();
+            for(int i=3 ; i<7; i++){
+                comboCluster.addItem(""+i);
+            }
+        }
+        else{
+            comboCluster.removeAllItems();
+            comboCluster.addItem("10");
+            comboCluster.addItem("20");
+            comboCluster.addItem("25");
+            comboCluster.addItem("29");
+            comboCluster.addItem("35");
+        }
+    }//GEN-LAST:event_comboDataItemStateChanged
+    
+    private void loadDataMatrix(double data[][]) {        
         int baris = data.length;
         int kolom = data[0].length;
         modelData = (DefaultTableModel) tableData.getModel();
         modelData.setColumnCount(kolom);
-
+        
         for (int i = 0; i < baris; i++) {
             String row[] = new String[kolom];
             for (int j = 0; j < kolom; j++) {
@@ -690,14 +784,13 @@ public class MainForm extends javax.swing.JFrame {
             modelData.addRow(row);
         }
     }
-
-    private void loadDataRandom(double data[][]) {
-
+    
+    private void loadDataRandom(double data[][]) {        
         int baris = data.length;
         int kolom = data[0].length;
         modelRandom = (DefaultTableModel) tableRandom.getModel();
         modelRandom.setColumnCount(kolom);
-
+        
         for (int i = 0; i < baris; i++) {
             String row[] = new String[kolom];
             for (int j = 0; j < kolom; j++) {
@@ -769,9 +862,9 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboData;
     private javax.swing.JComboBox<String> comboIterasi;
     private javax.swing.JComboBox<String> comboLajuAwal;
-    private javax.swing.JTextField dbiC;
-    private javax.swing.JTextField dbiE;
-    private javax.swing.JTextField dbiM;
+    private javax.swing.JTextField dbiChebyshev;
+    private javax.swing.JTextField dbiEuclidean;
+    private javax.swing.JTextField dbiManhattan;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -782,6 +875,9 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -791,6 +887,8 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -802,8 +900,8 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JTable jTable2;
     private javax.swing.JTable tableData;
     private javax.swing.JTable tableRandom;
-    private javax.swing.JTextField waktuC;
-    private javax.swing.JTextField waktuE;
-    private javax.swing.JTextField waktuM;
+    private javax.swing.JTextField waktuChebyshev;
+    private javax.swing.JTextField waktuEuclidean;
+    private javax.swing.JTextField waktuManhattan;
     // End of variables declaration//GEN-END:variables
 }

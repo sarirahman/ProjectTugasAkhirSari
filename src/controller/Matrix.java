@@ -14,18 +14,18 @@ import java.util.Random;
  */
 public class Matrix {
     
-    
     public double[][] randomValue(int jlhCluster, String data[][]){
         int kolom = data[0].length;
         return random(jlhCluster, kolom);
     }
     
     public double[][] random(int jlhCluster, int jlhAtribut){
+        DecimalUtils du = new DecimalUtils();
         Random rnd = new Random();
         double[][] d= new double[jlhCluster][jlhAtribut];
         for(int i=0; i<jlhCluster; i++){
             for(int j=0; j<jlhAtribut; j++){
-                d[i][j]=rnd.nextDouble();
+                d[i][j]= du.round(rnd.nextDouble(), 3);
             }
         }
         return d;

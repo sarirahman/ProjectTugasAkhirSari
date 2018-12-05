@@ -10,8 +10,8 @@ package controller;
  * @author User
  */
 public class SOM {
-
-    public int get_index(int data[][], int nilai) {
+    
+   public int get_index(int data[][], int nilai) {
         int i, j;
         int baris, kolom;
         for (i = 0; i < data.length; i++) {
@@ -64,11 +64,11 @@ public class SOM {
         int i, j, k,l;
         double min = 0;
         int min_bobot =0;
-        Cetak ctk = new Cetak();
+//        Cetak ctk = new Cetak();
 
         for (int loop = 0; loop < iterasi; loop++) {
-            System.out.println("\n---------------------Iterasi ke- " + loop + ": -------------------------");
-            ctk.cetak_double(bobot);
+//            System.out.println("\n---------------------Iterasi ke- " + loop + ": -------------------------");
+//            ctk.cetak_double(bobot);
 
             for (i = 0; i < baris_nilai; i++) {
                 for (j = 0; j < baris_bobot; j++) {
@@ -90,13 +90,13 @@ public class SOM {
                 for(l=0;l<bobot[0].length;l++){
                     bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
                 }
-                
-                System.out.println("Winners = "+min_bobot+" and value distance ="+min);
-                
+//                System.out.println("Winners = "+min_bobot+" and value distance ="+min);
             }
+//            System.out.println(alpha);
             alpha = alpha * 0.5;
+            
         }
-        ctk.cetak_double(data2);
+//        ctk.cetak_double(data2);
         return data2;
     }
 
@@ -111,12 +111,11 @@ public class SOM {
         int i, j, k,l;
         double min = 0;
         int min_bobot =0;
-        Cetak ctk = new Cetak();
+//        Cetak ctk = new Cetak();
 
         for (int loop = 0; loop < iterasi; loop++) {
-            System.out.println("\n---------------------Iterasi ke- " + loop + ": -------------------------");
-            ctk.cetak_double(bobot);
-
+//            System.out.println("\n---------------------Iterasi ke- " + loop + ": -------------------------");
+//            ctk.cetak_double(bobot);
             for (i = 0; i < baris_nilai; i++) {
                 for (j = 0; j < baris_bobot; j++) {
                     for (k = 0; k < kolom; k++) {
@@ -124,7 +123,7 @@ public class SOM {
                     }
 //                    System.out.println("Hasil = "+hasil);
                     hasil2[j] = hasil;
-//                    sum=0;
+                    sum=0;
                     hasil=0;
                 }
                 min_bobot = (int) getIndexOfMinimum(hasil2);
@@ -135,9 +134,9 @@ public class SOM {
                 for(l=0;l<bobot[0].length;l++){
                     bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
                 }
-                
-                System.out.println("Winners = "+min_bobot+" and value distance ="+min);
+//                System.out.println("Winners = "+min_bobot+" and value distance ="+min);
             }
+//            System.out.println(alpha);
             alpha = alpha * 0.5;
         }
         return data2;
@@ -154,12 +153,11 @@ public class SOM {
         int i, j, k,l;
         double min = 0;
         int min_bobot =0;
-        Cetak ctk = new Cetak();
+//        Cetak ctk = new Cetak();
 
         for (int loop = 0; loop < iterasi; loop++) {
-            System.out.println("\n---------------------Iterasi ke- " + loop + ": -------------------------");
-            ctk.cetak_double(bobot);
-
+//            System.out.println("\n---------------------Iterasi ke- " + loop + ": -------------------------");
+//            ctk.cetak_double(bobot);
             for (i = 0; i < baris_nilai; i++) {
                 for (j = 0; j < baris_bobot; j++) {
                     for (k = 0; k < kolom; k++) {
@@ -167,6 +165,7 @@ public class SOM {
                         if (sum > hasil) {
                             hasil = sum;
                         }
+//                        System.out.println("Sum = "+sum);
                     }
 //                    System.out.println("Hasil = "+hasil);
                     hasil2[j] = hasil;
@@ -182,13 +181,11 @@ public class SOM {
                 for(l=0;l<bobot[0].length;l++){
                     bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
                 }
-                
-                System.out.println("Winners = "+min_bobot+" and value distance ="+min);
+//                System.out.println("Winners = "+min_bobot+" and value distance ="+min);
             }
+//            System.out.println(alpha);
             alpha = alpha * 0.5;
         }
-        
-        
         return data2;
     }
 }

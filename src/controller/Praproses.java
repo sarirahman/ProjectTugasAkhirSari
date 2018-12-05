@@ -26,8 +26,8 @@ public class Praproses {
     
     private int sKolom[];
     
-    public String[][] dataValue (String data){
-        File file = new File("src/Dataset/"+data+".txt");
+    public String[][] dataValue (String kode){
+        File file = new File("src/Dataset/"+kode+".txt");
         String nilai[][] = null;
         
         try {
