@@ -13,6 +13,8 @@ import java.math.BigDecimal;
  */
 public class DecimalUtils {
     
+    public DecimalUtils(){}
+    
     public double round(double value, int numberOfDigitsAfterDecimalPoint) {
         BigDecimal bigDecimal = new BigDecimal(value);
         bigDecimal = bigDecimal.setScale(numberOfDigitsAfterDecimalPoint,

@@ -15,6 +15,8 @@ import java.util.Scanner;
  */
 public class OlahData {
     
+    public OlahData(){}
+    
     public int readJumlahIterasi(int kode){
         int jlhIterasi = 0;
         switch(kode){

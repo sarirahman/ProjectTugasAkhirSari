@@ -26,6 +26,8 @@ public class Praproses {
     
     private int sKolom[];
     
+    public Praproses(){}
+
     public String[][] dataValue (String kode){
         File file = new File("src/Dataset/"+kode+".txt");
         String nilai[][] = null;
@@ -69,13 +71,10 @@ public class Praproses {
             }   
             sKolom[j] = flag;
         }
-        
         return sKolom;
     }
     
     public String[][] pembobotan(String nilai[][]){
-        
-//        int i=0, j=0,k;
         int kolom = nilai[0].length;
         int baris = nilai.length;
         String flag = "0";
@@ -110,8 +109,7 @@ public class Praproses {
         return nilai;
     }
     
-    public String[][] pengecekanMissingValue(String bobot[][]){
-        
+    public String[][] pengecekanMissingValue(String bobot[][]){   
         int kolom = bobot[0].length;
         int baris = bobot.length;
         double max=0, sum = 0;
@@ -137,7 +135,6 @@ public class Praproses {
                     }
                 }
                 hasil[j] = mode;
-//                System.out.println(j+" "+hasil[j]);
             }
             
             else{
@@ -152,10 +149,6 @@ public class Praproses {
 
                 }
                 hasil[j] = String.valueOf(sum/(baris-count)) ;
-//                System.out.println(sum);
-//                System.out.println(baris);
-//                System.out.println(count);
-//                System.out.println(j+" "+hasil[j]);
                 sum = 0;
             }
             
@@ -217,6 +210,14 @@ public class Praproses {
         }
         
         return databersih;
+    }
+    
+    public double[][] hasilPraproses(String data){
+        String nilai[][] = dataValue(data);
+        String nilai2[][] = pembobotan(nilai);
+        String nilai3[][] = pengecekanMissingValue(nilai2);
+        double nilai4[][] = normalisasi(nilai3);
+        return nilai4;
     }
     
 }

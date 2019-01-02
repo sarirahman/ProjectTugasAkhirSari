@@ -12,6 +12,7 @@ import controller.Matrix;
 import controller.OlahData;
 import controller.Praproses;
 import controller.SOM;
+import controller.SaveDatatoFile;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -40,13 +41,12 @@ public class MainForm extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      */
-    private String nilai[][] = null;
-    private String nilai2[][] = null;
-    private String nilai3[][] = null;
-    private double nilai4[][] = null;
-    private double nilairandom[][] = null;
+    private double[][] value, nilairandom;
     private DefaultTableModel modelData, modelRandom;    
-    long startE = 0, endE = 0, startM = 0, endM = 0, startC = 0, endC = 0;
+    long timeE, timeM, timeC;
+    double dbiE, dbiM, dbiC;
+    double[][] clusterEuclidean, clusterManhattan, clusterChebyshev;
+    int[][] jlhClusterE, jlhClusterM, jlhClusterC;
     
     public MainForm() {
         initComponents();
@@ -167,7 +167,7 @@ public class MainForm extends javax.swing.JFrame {
 
         comboCluster.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "4", "5", "6" }));
 
-        buttonData.setText("Set");
+        buttonData.setText("Praproses");
         buttonData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonDataActionPerformed(evt);
@@ -209,7 +209,7 @@ public class MainForm extends javax.swing.JFrame {
         jLabel8.setText("Nilai DBI :");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel7.setText("Waktu Komputasi (ns) :");
+        jLabel7.setText("Waktu Komputasi (μs) :");
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel9.setText("Jumlah Anggota :");
@@ -432,10 +432,10 @@ public class MainForm extends javax.swing.JFrame {
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(comboData, 0, 113, Short.MAX_VALUE)
                                             .addComponent(comboCluster, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGap(18, 18, Short.MAX_VALUE)
+                                        .addGap(18, 18, 18)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(buttonRandom, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(buttonData, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                            .addComponent(buttonData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(buttonRandom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(53, 53, 53)
                                 .addComponent(buttonRefresh)
@@ -544,17 +544,10 @@ public class MainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRefreshActionPerformed
-        this.nilai = null;
-        this.nilai2 = null;
-        this.nilai3 = null;
-        this.nilai4 = null;
-        this.nilairandom = null;
-        this.startE = 0;
-        this.endE = 0;
-        this.startM = 0;
-        this.endM = 0;
-        this.startC = 0;
-        this.endC = 0;
+        value = null;
+        timeE = 0;
+        timeM = 0;
+        timeC = 0;
         comboData.setSelectedIndex(0);
         comboCluster.setSelectedIndex(0);
         comboIterasi.setSelectedIndex(0);
@@ -576,127 +569,73 @@ public class MainForm extends javax.swing.JFrame {
 
     private void prosesClustering(){
         int i, j;
-            int bBobot = nilairandom.length;
-            int kBobot = nilairandom[0].length;
-            int bData = nilai4.length;
-            int jlhIterasi = comboIterasi.getSelectedIndex();
-            int lajuawal = comboLajuAwal.getSelectedIndex();
-            OlahData oldok = new OlahData();
-            double alpha = oldok.readLajuAwal(lajuawal);
-            int iterasi = oldok.readJumlahIterasi(jlhIterasi);
-            System.out.println("Jumlah iterasi = "+iterasi);
-            System.out.println("Alpha = "+alpha);            
-                        
-            double clusterEuclidean[][] = new double[bData][2];
-            double bobot_randomE[][] = new double[bBobot][kBobot];
-            double dbiE = 0;
+        int bBobot = nilairandom.length;
+        int kBobot = nilairandom[0].length;
+        int bData = value.length;
+        int jlhIterasi = comboIterasi.getSelectedIndex();
+        int lajuawal = comboLajuAwal.getSelectedIndex();
+        OlahData oldok = new OlahData();
+        double alpha = oldok.readLajuAwal(lajuawal);
+        int iterasi = oldok.readJumlahIterasi(jlhIterasi);           
+                      
+        clusterEuclidean = new double[bData][2];
+        double bobot_randomE[][] = new double[bBobot][kBobot];
+        dbiE = 0;
             
-            double clusterManhattan[][] = new double[bData][2];
-            double bobot_randomM[][] = new double[bBobot][kBobot]; 
-            double dbiM = 0;
+        clusterManhattan = new double[bData][2];
+        double bobot_randomM[][] = new double[bBobot][kBobot]; 
+        dbiM = 0;
             
-            double clusterChebyshev[][] = new double[bData][2];
-            double bobot_randomC[][] = new double[bBobot][kBobot];
-            double dbiC = 0;
+        clusterChebyshev = new double[bData][2];
+        double bobot_randomC[][] = new double[bBobot][kBobot];
+        dbiC = 0;
             
-            for (i = 0; i < bBobot; i++) {
-                for (j = 0; j < kBobot; j++) {
-                    bobot_randomE[i][j] = nilairandom[i][j];
-                    bobot_randomM[i][j] = nilairandom[i][j];
-                    bobot_randomC[i][j] = nilairandom[i][j];
-                }
+        for (i = 0; i < bBobot; i++) {
+            for (j = 0; j < kBobot; j++) {
+                bobot_randomE[i][j] = nilairandom[i][j];
+                bobot_randomM[i][j] = nilairandom[i][j];
+                bobot_randomC[i][j] = nilairandom[i][j];
             }
-            
-//            Cetak ctk = new Cetak();
-//            System.out.println("\nSebelum Proses\n");
-//            ctk.cetak_double(bobot_randomE);
-//            ctk.cetak_double(bobot_randomM);
-//            ctk.cetak_double(bobot_randomC);
-            
-            SOM som = new SOM();
-            startE = System.nanoTime();
-            clusterEuclidean = som.testEuclidean(nilai4, bobot_randomE, alpha, iterasi);
-            endE = System.nanoTime();
-            int[][] jlhClusterE = new int[clusterEuclidean.length][2];
-            
-            startM = System.nanoTime();
-            clusterManhattan = som.testManhattan(nilai4, bobot_randomM, alpha, iterasi);
-            endM = System.nanoTime();
-            int[][] jlhClusterM = new int[clusterManhattan.length][2];
-            
-            startC = System.nanoTime();
-            clusterChebyshev = som.testChebyshev(nilai4, bobot_randomC, alpha, iterasi);
-            endC = System.nanoTime();
-            int[][] jlhClusterC = new int[clusterChebyshev.length][2];
-            
-//            System.out.println("\n\nSetelah Proses\n");
-//            ctk.cetak_double(bobot_randomE);
-//            ctk.cetak_double(bobot_randomM);
-//            ctk.cetak_double(bobot_randomC);          
-            
-            DBI idb = new DBI();
-            
-            jlhClusterE = idb.amount(clusterEuclidean, bBobot);
-            jlhClusterM = idb.amount(clusterManhattan, bBobot);
-            jlhClusterC = idb.amount(clusterChebyshev, bBobot);            
-            
-            dbiE = idb.value(clusterEuclidean);
-            dbiM = idb.value(clusterManhattan);
-            dbiC = idb.value(clusterChebyshev);
-            
-            waktuEuclidean.setText(""+(endE - startE));            
-            waktuManhattan.setText(""+(endM - startM));
-            waktuChebyshev.setText(""+(endC - startC));
-            
-            DecimalUtils du = new DecimalUtils();
-            dbiEuclidean.setText(""+du.round(dbiE, 5));
-            dbiManhattan.setText(""+du.round(dbiM, 5));
-            dbiChebyshev.setText(""+du.round(dbiC, 5));
-            
-            anggotaE.setText("Data       Cluster\n");
-            for(i=0; i<bData; i++) {
-                anggotaE.append(" " + i + "           " + (int) clusterEuclidean[i][0] + "\n");
-            }
-            anggotaE.append("\n");
-            for(i=0; i<jlhClusterE.length; i++){
-                anggotaE.append("Cluster "+jlhClusterE[i][0]+" : "+jlhClusterE[i][1]+"\n");
-            }
-            
-            anggotaM.setText("Data       Cluster\n");
-            for(i=0; i<bData; i++) {
-                anggotaM.append(" " + i + "           " + (int) clusterManhattan[i][0] + "\n");
-            }
-            anggotaM.append("\n");
-            for(i=0; i<jlhClusterM.length; i++){
-                anggotaM.append("Cluster "+jlhClusterM[i][0]+" : "+jlhClusterM[i][1]+"\n");
-            }
-            
-            anggotaC.setText("Data       Cluster\n");
-            for(i=0; i<bData; i++) {
-                anggotaC.append(" " + i + "           " + (int) clusterChebyshev[i][0] + "\n");
-            }
-            anggotaC.append("\n");
-            for(i=0; i<jlhClusterC.length; i++){
-                anggotaC.append("Cluster "+jlhClusterC[i][0]+" : "+jlhClusterC[i][1]+"\n");
-            }
-            saveData(comboData.getSelectedIndex(), bBobot, alpha, iterasi, du.round(dbiE, 5), du.round(dbiM, 5), du.round(dbiE, 5), endE - startE, endM - startM, endC - startC);
-            
-            this.startE = 0; this.endE = 0; this.startM = 0; this.endM = 0; this.startC = 0; this.endC = 0;
-    }
-    
-    private void saveData(int kodeData, int kodeCluster, double alpha, int iterasi,
-            double dbiE, double dbiM, double dbiC, long waktuE, long waktuM, long waktuC){
-        
-        File file = new File("src/output/"+kodeData + kodeCluster+".txt");
-        try(FileWriter fw = new FileWriter(file, true);
-        BufferedWriter bw = new BufferedWriter(fw);
-        PrintWriter out = new PrintWriter(bw)) {
-            out.println(alpha+" "+iterasi+" "+dbiE+" "+dbiM+" "+dbiC+" "+waktuE+" "+waktuM+" "+waktuC);
-        }
-        catch (IOException e) {
-            System.out.println("Error");
         }
         
+//        Cetak ctk = new Cetak();
+            
+        SOM som = new SOM(value, iterasi);
+        
+        long startE = System.nanoTime();
+        clusterEuclidean = som.clusteringESOM(bobot_randomE, alpha);
+        long endE = System.nanoTime();
+        timeE = (endE - startE)/1000;
+        jlhClusterE = new int[clusterEuclidean.length][2];
+            
+        long startM = System.nanoTime();
+        clusterManhattan = som.clusteringMSOM(bobot_randomM, alpha);
+        long endM = System.nanoTime();
+        timeM = (endM - startM)/1000;
+        jlhClusterM = new int[clusterManhattan.length][2];
+            
+        long startC = System.nanoTime();
+        clusterChebyshev = som.clusteringCSOM(bobot_randomC, alpha);
+        long endC = System.nanoTime();
+        timeC = (endC - startC)/1000;
+        jlhClusterC = new int[clusterChebyshev.length][2];        
+            
+        DBI idb = new DBI();
+        jlhClusterE = idb.amount(clusterEuclidean, bBobot);
+        jlhClusterM = idb.amount(clusterManhattan, bBobot);
+        jlhClusterC = idb.amount(clusterChebyshev, bBobot);            
+            
+        dbiE = idb.value(clusterEuclidean);
+        dbiM = idb.value(clusterManhattan);
+        dbiC = idb.value(clusterChebyshev);
+        
+        setTextValue();
+//        SaveDatatoFile save = new SaveDatatoFile();
+//        save.saveData(comboData.getSelectedIndex(), bBobot, alpha, iterasi, dbiE, dbiM, dbiC, timeE, timeM, timeC);
+        
+        dbiC = 0; dbiM = 0; dbiC = 0;
+        timeE = 0; timeM = 0; timeC = 0;
+        clusterEuclidean = null; clusterManhattan = null; clusterChebyshev = null;
     }
     
     private void buttonProsesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonProsesActionPerformed
@@ -709,6 +648,45 @@ public class MainForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_buttonProsesActionPerformed
     
+    private void setTextValue(){
+        int i;
+        int bData = value.length;
+        waktuEuclidean.setText(""+timeE);            
+        waktuManhattan.setText(""+timeM);
+        waktuChebyshev.setText(""+timeC);
+
+        dbiEuclidean.setText(""+dbiE);
+        dbiManhattan.setText(""+dbiM);
+        dbiChebyshev.setText(""+dbiC);
+        
+        anggotaE.setText("Data       Cluster\n");
+        for(i=0; i<bData; i++) {
+            anggotaE.append(" " + i + "           " + (int) clusterEuclidean[i][0] + "\n");
+        }
+        anggotaE.append("\n");
+        for(i=0; i<jlhClusterE.length; i++){
+            anggotaE.append("Cluster "+jlhClusterE[i][0]+" : "+jlhClusterE[i][1]+"\n");
+        }
+            
+        anggotaM.setText("Data       Cluster\n");
+        for(i=0; i<bData; i++) {
+            anggotaM.append(" " + i + "           " + (int) clusterManhattan[i][0] + "\n");
+        }
+        anggotaM.append("\n");
+        for(i=0; i<jlhClusterM.length; i++){
+            anggotaM.append("Cluster "+jlhClusterM[i][0]+" : "+jlhClusterM[i][1]+"\n");
+        }
+            
+        anggotaC.setText("Data       Cluster\n");
+        for(i=0; i<bData; i++) {
+            anggotaC.append(" " + i + "           " + (int) clusterChebyshev[i][0] + "\n");
+        }
+        anggotaC.append("\n");
+        for(i=0; i<jlhClusterC.length; i++){
+            anggotaC.append("Cluster "+jlhClusterC[i][0]+" : "+jlhClusterC[i][1]+"\n");
+        }
+    }
+    
     private void prosesRandom(){
         nilairandom = null;
         tableRandom.setModel(new DefaultTableModel());
@@ -717,13 +695,12 @@ public class MainForm extends javax.swing.JFrame {
         OlahData oldok = new OlahData();
         int jlhCluster = oldok.readJumlahCluster(kodeCluster, kodeData);
         Matrix m = new Matrix();
-        nilairandom = m.randomValue(jlhCluster, nilai);
+        nilairandom = m.randomValue(jlhCluster, value);
         loadDataRandom(nilairandom);
-        System.out.println("Jumlah cluster = "+jlhCluster);
     }
     
     private void buttonRandomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRandomActionPerformed
-        if (nilai4 == null) {
+        if (value == null) {
             JOptionPane.showMessageDialog(null, "Data Set Kosong", "WARNING", JOptionPane.WARNING_MESSAGE);
         } else {
             prosesRandom();
@@ -732,20 +709,13 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonRandomActionPerformed
     
     private void prosesData(){
-        nilai = null; nilai2 = null; nilai3 = null; nilai4 = null;
-        String data;
-        
-        data = comboData.getSelectedItem().toString();
+        value = null;
+        String data = comboData.getSelectedItem().toString();
         tableData.setModel(new DefaultTableModel());
         Praproses praproses = new Praproses();
-        nilai = praproses.dataValue(data);
-        nilai2 = praproses.pembobotan(nilai);
-        nilai3 = praproses.pengecekanMissingValue(nilai2);
-        nilai4 = praproses.normalisasi(nilai3);
-        loadDataMatrix(nilai4);
+        value = praproses.hasilPraproses(data);
+        loadDataMatrix(value);
         buttonData.setEnabled(false);
-        System.out.println("Data set adalah = "+data);
-        System.out.println("Jumlah data = "+nilai4.length);
     }
     
     private void buttonDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDataActionPerformed
@@ -753,7 +723,6 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonDataActionPerformed
 
     private void comboDataItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboDataItemStateChanged
-        // TODO add your handling code here:
         if(comboData.getSelectedIndex() == 0 || comboData.getSelectedIndex() == 1 || comboData.getSelectedIndex() == 2){
             comboCluster.removeAllItems();
             for(int i=3 ; i<7; i++){

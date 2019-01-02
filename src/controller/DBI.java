@@ -16,7 +16,10 @@ import java.util.Arrays;
  */
 public class DBI {
     
+    public DBI(){}
+    
     public double value(double cluster[][]){
+        DecimalUtils du = new DecimalUtils();
         List<Integer> tmp2 = new ArrayList<Integer>();
         int i,j;
         int counter=0;
@@ -56,13 +59,6 @@ public class DBI {
             counter=0;
             sum=0;
         }
-
-//        for(i=0; i<list.length; i++){
-//            System.out.println(list[i][0]+" "+list[i][1]);
-//        }
-//        for(i=0; i<list.length; i++){
-//            System.out.println(list[i][0]+" "+x[i]);
-//        }
         
         double var[] = new double[list.length];
         var[0] = 0;
@@ -73,15 +69,9 @@ public class DBI {
                     sum = sum + Math.pow(cluster[j][1] - x[i],2);   
                 }
             }
-//            System.out.println(sum);
             var[i] = sum/(list[i][1]);
             sum=0;
         }
-        
-//        System.out.println("");
-//        for(i=0; i<list.length; i++){
-//            System.out.println(list[i][0]+" "+var[i]);
-//        }
         
         double totVar = 0, totX = 0;
         for(i=0; i<list.length; i++){
@@ -90,11 +80,12 @@ public class DBI {
         }
         double rMax = totVar/Math.abs(totX);
         double hasil = rMax/list.length;
-        return hasil;
+        double dbiValue = du.round(hasil, 5);
+        
+        return dbiValue;
     }
     
      public int [][] amount(double cluster[][],int jcluster){
-//        int jcluster = Integer.parseInt(jc);
         int list[][] = new int [jcluster][2];
         int[] temp = new int[jcluster];
         int i,j,counter=0;
@@ -113,8 +104,6 @@ public class DBI {
             list[i][1]=counter;
             counter=0;
         }
-       
-        
         return list;
     }
     

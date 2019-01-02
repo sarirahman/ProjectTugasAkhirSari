@@ -14,7 +14,9 @@ import java.util.Random;
  */
 public class Matrix {
     
-    public double[][] randomValue(int jlhCluster, String data[][]){
+    public Matrix(){}
+    
+    public double[][] randomValue(int jlhCluster, double[][] data){
         int kolom = data[0].length;
         return random(jlhCluster, kolom);
     }

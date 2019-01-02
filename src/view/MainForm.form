@@ -193,10 +193,10 @@
                                               <Component id="comboData" pref="113" max="32767" attributes="0"/>
                                               <Component id="comboCluster" max="32767" attributes="0"/>
                                           </Group>
-                                          <EmptySpace type="separate" max="32767" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="buttonRandom" alignment="1" min="-2" pref="80" max="-2" attributes="0"/>
-                                              <Component id="buttonData" alignment="1" min="-2" pref="80" max="-2" attributes="0"/>
+                                              <Component id="buttonData" max="32767" attributes="0"/>
+                                              <Component id="buttonRandom" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -364,7 +364,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="buttonData">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Set"/>
+            <Property name="text" type="java.lang.String" value="Praproses"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonDataActionPerformed"/>
@@ -446,7 +446,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="12" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Waktu Komputasi (ns) :"/>
+            <Property name="text" type="java.lang.String" value="Waktu Komputasi (&#x3bc;s) :"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel9">

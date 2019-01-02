@@ -10,25 +10,20 @@ package controller;
  * @author User
  */
 public class SOM {
+    double[][] data;
+    int iterasi;
+    Cetak ctk = new Cetak();
     
-   public int get_index(int data[][], int nilai) {
-        int i, j;
-        int baris, kolom;
-        for (i = 0; i < data.length; i++) {
-            for (j = 0; j < data[0].length; j++) {
-                if (data[i][j] == nilai) {
-                    baris = i;
-                    kolom = j;
-                }
-            }
-        }
-
-        return nilai;
+    public SOM(){}
+    
+    public SOM(double[][] data, int iterasi){
+        this.data = data;
+        this.iterasi = iterasi;
     }
 
     public double getIndexOfMinimum(double[] array) {
         if (array == null || array.length == 0) {
-            return -1; // null or empty
+            return -1;
         }
         int min = 0;
         for (int i = 1; i < array.length; i++) {
@@ -36,12 +31,12 @@ public class SOM {
                 min = i;
             }
         }
-        return min; // position of the first smallest found
+        return min;
     }
     
     public double getValueOfMinimum(double[] array) {
         if (array == null || array.length == 0) {
-            return -1; // null or empty
+            return -1;
         }
         int min = 0;
         for (int i = 1; i < array.length; i++) {
@@ -49,11 +44,10 @@ public class SOM {
                 min = i;
             }
         }
-        
-        return array[min]; // position of the first largest found
+        return array[min];
     }
 
-    public double[][] testEuclidean(double data[][], double bobot[][], double alpha, int iterasi) {
+    public double[][] testEuclidean(double[][] bobot, double alpha) {
         int baris_nilai = data.length;
         int baris_bobot = bobot.length;
         int kolom = data[0].length;
@@ -64,19 +58,14 @@ public class SOM {
         int i, j, k,l;
         double min = 0;
         int min_bobot =0;
-//        Cetak ctk = new Cetak();
-
+        ctk.cetak_double(bobot);
         for (int loop = 0; loop < iterasi; loop++) {
-//            System.out.println("\n---------------------Iterasi ke- " + loop + ": -------------------------");
-//            ctk.cetak_double(bobot);
-
             for (i = 0; i < baris_nilai; i++) {
                 for (j = 0; j < baris_bobot; j++) {
                     for (k = 0; k < kolom; k++) {
                         sum = sum + Math.pow(data[i][k] - bobot[j][k], 2);
-                        hasil = Math.sqrt(sum);
                     }
-//                    System.out.println("Hasil = "+hasil);
+                    hasil = Math.sqrt(sum);
                     hasil2[j] = hasil;
                     sum=0;
                     hasil=0;
@@ -86,21 +75,38 @@ public class SOM {
                 min = getValueOfMinimum(hasil2);
                 data2[i][0]= min_bobot;
                 data2[i][1]= min;
-                //update bobot baru (wbaru) = (wjlama) + (alpha*(xi-wjlama))
+
+//                if(min_bobot-1 < 0 && min_bobot+1 < baris_bobot){
+//                    for(l=0;l<bobot[0].length;l++){
+//                        bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
+//                        bobot[min_bobot+1][l] = bobot[min_bobot+1][l]+(alpha *(data[i][l]-bobot[min_bobot+1][l]));
+//                    }
+//                }
+//                else if(min_bobot-1 >= 0 && min_bobot+1 > baris_bobot-1){
+//                    for(l=0;l<bobot[0].length;l++){
+//                        bobot[min_bobot-1][l] = bobot[min_bobot-1][l]+(alpha *(data[i][l]-bobot[min_bobot-1][l]));
+//                        bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
+//                    }
+//                }
+//                else{
+//                    for(l=0;l<bobot[0].length;l++){
+//                        bobot[min_bobot-1][l] = bobot[min_bobot-1][l]+(alpha *(data[i][l]-bobot[min_bobot-1][l]));
+//                        bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
+//                        bobot[min_bobot+1][l] = bobot[min_bobot+1][l]+(alpha *(data[i][l]-bobot[min_bobot+1][l]));
+//                    }
+//                }
+                
                 for(l=0;l<bobot[0].length;l++){
                     bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
                 }
-//                System.out.println("Winners = "+min_bobot+" and value distance ="+min);
             }
-//            System.out.println(alpha);
             alpha = alpha * 0.5;
-            
         }
-//        ctk.cetak_double(data2);
+        ctk.cetak_double(data2);
         return data2;
     }
 
-    public double[][] testManhattan(double data[][], double bobot[][], double alpha, int iterasi) {
+    public double[][] testManhattan(double[][] bobot, double alpha) {
         int baris_nilai = data.length;
         int baris_bobot = bobot.length;
         int kolom = data[0].length;
@@ -111,17 +117,12 @@ public class SOM {
         int i, j, k,l;
         double min = 0;
         int min_bobot =0;
-//        Cetak ctk = new Cetak();
-
         for (int loop = 0; loop < iterasi; loop++) {
-//            System.out.println("\n---------------------Iterasi ke- " + loop + ": -------------------------");
-//            ctk.cetak_double(bobot);
             for (i = 0; i < baris_nilai; i++) {
                 for (j = 0; j < baris_bobot; j++) {
                     for (k = 0; k < kolom; k++) {
                         hasil = hasil + Math.abs(data[i][k]-bobot[j][k]);
                     }
-//                    System.out.println("Hasil = "+hasil);
                     hasil2[j] = hasil;
                     sum=0;
                     hasil=0;
@@ -130,19 +131,37 @@ public class SOM {
                 min = getValueOfMinimum(hasil2);
                 data2[i][0]= min_bobot;
                 data2[i][1]= min;
-                //update bobot baru (wbaru) = (wjlama) + (alpha*(xi-wjlama))
-                for(l=0;l<bobot[0].length;l++){
-                    bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
+                
+                if(min_bobot-1 < 0 && min_bobot+1 < baris_bobot){
+                    for(l=0;l<bobot[0].length;l++){
+                        bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
+                        bobot[min_bobot+1][l] = bobot[min_bobot+1][l]+(alpha *(data[i][l]-bobot[min_bobot+1][l]));
+                    }
                 }
-//                System.out.println("Winners = "+min_bobot+" and value distance ="+min);
+                else if(min_bobot-1 >= 0 && min_bobot+1 > baris_bobot-1){
+                    for(l=0;l<bobot[0].length;l++){
+                        bobot[min_bobot-1][l] = bobot[min_bobot-1][l]+(alpha *(data[i][l]-bobot[min_bobot-1][l]));
+                        bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
+                    }
+                }
+                else{
+                    for(l=0;l<bobot[0].length;l++){
+                        bobot[min_bobot-1][l] = bobot[min_bobot-1][l]+(alpha *(data[i][l]-bobot[min_bobot-1][l]));
+                        bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
+                        bobot[min_bobot+1][l] = bobot[min_bobot+1][l]+(alpha *(data[i][l]-bobot[min_bobot+1][l]));
+                    }
+                }
+                
+//                for(l=0;l<bobot[0].length;l++){
+//                    bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
+//                }
             }
-//            System.out.println(alpha);
             alpha = alpha * 0.5;
         }
         return data2;
     }
 
-    public double[][] testChebyshev(double data[][], double bobot[][], double alpha, int iterasi) {
+    public double[][] testChebyshev(double[][] bobot, double alpha) {
         int baris_nilai = data.length;
         int baris_bobot = bobot.length;
         int kolom = data[0].length;
@@ -153,11 +172,8 @@ public class SOM {
         int i, j, k,l;
         double min = 0;
         int min_bobot =0;
-//        Cetak ctk = new Cetak();
 
         for (int loop = 0; loop < iterasi; loop++) {
-//            System.out.println("\n---------------------Iterasi ke- " + loop + ": -------------------------");
-//            ctk.cetak_double(bobot);
             for (i = 0; i < baris_nilai; i++) {
                 for (j = 0; j < baris_bobot; j++) {
                     for (k = 0; k < kolom; k++) {
@@ -165,27 +181,62 @@ public class SOM {
                         if (sum > hasil) {
                             hasil = sum;
                         }
-//                        System.out.println("Sum = "+sum);
                     }
-//                    System.out.println("Hasil = "+hasil);
                     hasil2[j] = hasil;
                     sum=0;
                     hasil=0;
-                    
                 }
                 min_bobot = (int) getIndexOfMinimum(hasil2);
                 min = getValueOfMinimum(hasil2);
                 data2[i][0]= min_bobot;
                 data2[i][1]= min;
-                //update bobot baru (wbaru) = (wjlama) + (alpha*(xi-wjlama))
-                for(l=0;l<bobot[0].length;l++){
-                    bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
+                
+                if(min_bobot-1 < 0 && min_bobot+1 < baris_bobot){
+                    for(l=0;l<bobot[0].length;l++){
+                        bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
+                        bobot[min_bobot+1][l] = bobot[min_bobot+1][l]+(alpha *(data[i][l]-bobot[min_bobot+1][l]));
+                    }
                 }
-//                System.out.println("Winners = "+min_bobot+" and value distance ="+min);
+                else if(min_bobot-1 >= 0 && min_bobot+1 > baris_bobot-1){
+                    for(l=0;l<bobot[0].length;l++){
+                        bobot[min_bobot-1][l] = bobot[min_bobot-1][l]+(alpha *(data[i][l]-bobot[min_bobot-1][l]));
+                        bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
+                    }
+                }
+                else{
+                    for(l=0;l<bobot[0].length;l++){
+                        bobot[min_bobot-1][l] = bobot[min_bobot-1][l]+(alpha *(data[i][l]-bobot[min_bobot-1][l]));
+                        bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
+                        bobot[min_bobot+1][l] = bobot[min_bobot+1][l]+(alpha *(data[i][l]-bobot[min_bobot+1][l]));
+                    }
+                }
+                
+//                for(l=0;l<bobot[0].length;l++){
+//                    bobot[min_bobot][l] = bobot[min_bobot][l]+(alpha *(data[i][l]-bobot[min_bobot][l]));
+//                }
             }
-//            System.out.println(alpha);
             alpha = alpha * 0.5;
         }
+        
         return data2;
+    }
+    
+    
+    public double[][] clusteringESOM(double[][] bobot, double alpha){
+        double[][] hasilESOM = new double[data.length][2];
+        hasilESOM = testEuclidean(bobot, alpha);
+        return hasilESOM;
+    }
+    
+    public double[][] clusteringMSOM(double[][] bobot, double alpha){
+        double[][] hasilMSOM = new double[data.length][2];
+        hasilMSOM = testManhattan(bobot, alpha);
+        return hasilMSOM;
+    }
+    
+    public double[][] clusteringCSOM(double[][] bobot, double alpha){
+        double[][] hasilCSOM = new double[data.length][2];
+        hasilCSOM = testChebyshev(bobot, alpha);
+        return hasilCSOM;
     }
 }
